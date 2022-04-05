@@ -1,0 +1,16 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "fantom_storefront",
+    "user": "karbm",
+    "password": "karbm"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "fantom_test",
+    "user": "karbm",
+    "password": "karbm"
+  }
+}

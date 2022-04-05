@@ -4,11 +4,12 @@
     "description": "Fantom is an online store api that display products available for purchase.",
     "main": "server.js",
     "scripts": {
-        "start": "node src/server.ts",
-        "lint": "eslint --ext .ts .",
-        "prettier": "prettier --config .prettierrc --ignore-path .gitignore  --write './src**/*.+(js|ts)'",
+        "start": "node ./dist/server.js",
+        "lint": "eslint --ext .ts --fix.",
+        "format": "npm run lint && npm run prettier",
+        "prettier": "prettier --config .prettierrc --ignore-path .gitignore  --write './src/**/*.+(js|ts)'",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-        "test": "NODE_ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+        "test-db": "NODE_ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
         "tsc": "tsc"
     },
     "repository": {
@@ -51,6 +52,8 @@
         "eslint-plugin-import": "^2.25.4",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "prettier": "^2.5.1"
+        "prettier": "^2.5.1",
+        "supertest": "^6.2.2",
+        "@types/supertest": "^2.0.11"
     }
 }

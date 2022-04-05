@@ -40,17 +40,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
+var database_1 = __importDefault(require("./database"));
 var app = (0, express_1["default"])();
 var address = '0.0.0.0:3000';
 app.use(express_1["default"].json());
-app.get('/', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            res.send('Welcome to Fantom');
-            return [2 /*return*/];
-        });
+app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
+        return [2 /*return*/];
     });
+}); });
+console.log(database_1["default"]);
+app.get('*', function (req, res) {
+    res.status(200).json({ Message: 'Please provide a valid endpoint' });
 });
 app.listen(3000, function () {
     console.log("starting app on: ".concat(address));
 });
+exports["default"] = app;
