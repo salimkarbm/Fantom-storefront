@@ -35,10 +35,21 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
+const ProductByCategory = async (req: Request, res: Response) => {
+  try {
+    const category = req.query.category as string;
+    const product = await store.productByCategory(category);
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+};
+
 const productRoutes = (app: express.Application) => {
   app.post('/api/products', verifyAuthToken, create);
   app.get('/api/products', index);
   app.get('/api/products/:id', show);
+  app.get('/api/product', ProductByCategory);
 };
 
 export default productRoutes;

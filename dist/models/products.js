@@ -118,6 +118,31 @@ var ProductStore = /** @class */ (function () {
             });
         });
     };
+    ProductStore.prototype.productByCategory = function (category) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = "SELECT * FROM products WHERE category='".concat(category, "'");
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_4 = _a.sent();
+                        console.error(err_4);
+                        throw new Error("".concat(category, " does not exist.").concat(err_4));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return ProductStore;
 }());
 exports.ProductStore = ProductStore;

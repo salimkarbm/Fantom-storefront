@@ -46,4 +46,17 @@ export class ProductStore {
       throw new Error(`unable to find products with id ${id}. Error: ${err}`);
     }
   }
+
+  async productByCategory(category: string): Promise<Product[]> {
+    try {
+      const sql = `SELECT * FROM products WHERE category='${category}'`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      console.error(err);
+      throw new Error(`${category} does not exist.${err}`);
+    }
+  }
 }

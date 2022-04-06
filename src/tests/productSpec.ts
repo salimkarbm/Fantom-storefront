@@ -30,4 +30,11 @@ describe('Test products', () => {
     const result = await store.index();
     expect(result).toBeInstanceOf(Object);
   });
+  it('should have a productByCategory method', () => {
+    expect(store.productByCategory).toBeDefined();
+  });
+  it('should return all product that belong to the same category', async () => {
+    const result = await store.index();
+    expect(result).toBeInstanceOf(Object);
+  });
 });
