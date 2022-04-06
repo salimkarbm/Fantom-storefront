@@ -46,4 +46,39 @@ export class UserStore {
       throw new Error(`unable to fetch users from database ${err}`);
     }
   }
+
+  async show(id: string): Promise<User> {
+    try {
+      const sql = `SELECT * FROM users WHERE id=${id}`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      const book = result.rows[0];
+      conn.release();
+      return book;
+    } catch (err) {
+      throw new Error(`unable find user with id ${id}. Error: ${err}`);
+    }
+  }
+
+  async authenticate(
+    firstname: string,
+    lastname: string,
+    password: string
+  ): Promise<User | null> {
+    try {
+      const conn = await client.connect();
+      const sql =
+        'SELECT firstname, lastname, password_digest FROM users WHERE firstname = ($1) AND lastname = ($2)';
+      const result = await conn.query(sql, [firstname, lastname]);
+      if (result.rows.length > 0) {
+        const user = result.rows[0];
+        if (await bcrypt.compare(password + pepper, user.password_digest)) {
+          return user;
+        }
+      }
+      return null;
+    } catch (err) {
+      throw new Error(`Unable to authenticate user ${err}`);
+    }
+  }
 }

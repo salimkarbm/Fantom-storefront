@@ -17,8 +17,26 @@ describe('Test Users', () => {
   it('should have a index method', () => {
     expect(store.index).toBeDefined();
   });
-  it('should return created user', async () => {
+  it('should return an array of all users', async () => {
     const result = await store.index();
     expect(result).toBeInstanceOf(Array);
+  });
+  it('should have a show method', () => {
+    expect(store.index).toBeDefined();
+  });
+  it('should return a single user', async () => {
+    const result = await store.index();
+    expect(result).toBeInstanceOf(Object);
+  });
+  it('should have an authenticate method', () => {
+    expect(store.authenticate).toBeDefined();
+  });
+  it('should return token', async () => {
+    const result = await store.authenticate(
+      user.firstName,
+      user.lastName,
+      user.password
+    );
+    expect(result).toBeInstanceOf(String);
   });
 });

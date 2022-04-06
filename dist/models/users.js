@@ -109,6 +109,62 @@ var UserStore = /** @class */ (function () {
             });
         });
     };
+    UserStore.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, book, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = "SELECT * FROM users WHERE id=".concat(id);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        book = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, book];
+                    case 3:
+                        err_3 = _a.sent();
+                        throw new Error("unable find user with id ".concat(id, ". Error: ").concat(err_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserStore.prototype.authenticate = function (firstname, lastname, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, user, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'SELECT firstname, lastname, password_digest FROM users WHERE firstname = ($1) AND lastname = ($2)';
+                        return [4 /*yield*/, conn.query(sql, [firstname, lastname])];
+                    case 2:
+                        result = _a.sent();
+                        if (!(result.rows.length > 0)) return [3 /*break*/, 4];
+                        user = result.rows[0];
+                        return [4 /*yield*/, bcrypt_1["default"].compare(password + pepper, user.password_digest)];
+                    case 3:
+                        if (_a.sent()) {
+                            return [2 /*return*/, user];
+                        }
+                        _a.label = 4;
+                    case 4: return [2 /*return*/, null];
+                    case 5:
+                        err_4 = _a.sent();
+                        throw new Error("Unable to authenticate user ".concat(err_4));
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return UserStore;
 }());
 exports.UserStore = UserStore;

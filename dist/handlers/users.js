@@ -90,8 +90,60 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.params.id)];
+            case 1:
+                user = _a.sent();
+                res.status(200).json(user);
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                res.status(400).json({ error: err_3 });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, authenticateUser, token, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = {
+                    firstName: req.body.firstname.trim(),
+                    lastName: req.body.lastname.trim(),
+                    password: req.body.password.trim()
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.authenticate(user.firstName, user.lastName, user.password)];
+            case 2:
+                authenticateUser = _a.sent();
+                if (authenticateUser === null) {
+                    return [2 /*return*/, res.status(401).json({ message: 'incorrect password' })];
+                }
+                token = jsonwebtoken_1["default"].sign({ userId: authenticateUser.id }, secret);
+                res.status(200).json(token);
+                return [3 /*break*/, 4];
+            case 3:
+                err_4 = _a.sent();
+                console.log(err_4);
+                res.status(400).json({ error: err_4 });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 var userRoutes = function (app) {
     app.post('/api/users', create);
     app.get('/api/users', index);
+    app.get('/api/users/:id', show);
+    app.post('/api/login', authenticate);
 };
 exports["default"] = userRoutes;
