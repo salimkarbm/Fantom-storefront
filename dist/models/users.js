@@ -39,22 +39,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var ussers_1 = __importDefault(require("./handlers/ussers"));
-var app = (0, express_1["default"])();
-var address = '0.0.0.0:3000';
-app.use(express_1["default"].json());
-app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
-        return [2 /*return*/];
-    });
-}); });
-(0, ussers_1["default"])(app);
-app.get('*', function (req, res) {
-    res.status(200).json({ Message: 'Please provide a valid endpoint' });
-});
-app.listen(3000, function () {
-    console.log("starting app on: ".concat(address));
-});
-exports["default"] = app;
+exports.UserStore = void 0;
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var database_1 = __importDefault(require("../database"));
+var pepper = process.env.BCRYPT_PASSWORD;
+var UserStore = /** @class */ (function () {
+    function UserStore() {
+    }
+    UserStore.prototype.create = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newUser, saltRound, conn, sql, hash, result, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        newUser = {
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            password: user.password
+                        };
+                        saltRound = parseInt(process.env.SALT_ROUNDS, 10);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 2:
+                        conn = _a.sent();
+                        sql = 'INSERT INTO users (firstname, lastname, password_digest) VALUES($1, $2, $3) RETURNING * ';
+                        return [4 /*yield*/, bcrypt_1["default"].hash(newUser.password + pepper, saltRound)];
+                    case 3:
+                        hash = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [
+                                newUser.firstName,
+                                newUser.lastName,
+                                hash,
+                            ])];
+                    case 4:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 5:
+                        err_1 = _a.sent();
+                        throw new Error("Unable to create user ".concat(newUser.firstName, ",").concat(err_1));
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return UserStore;
+}());
+exports.UserStore = UserStore;

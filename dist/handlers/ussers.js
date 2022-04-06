@@ -39,22 +39,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var ussers_1 = __importDefault(require("./handlers/ussers"));
-var app = (0, express_1["default"])();
-var address = '0.0.0.0:3000';
-app.use(express_1["default"].json());
-app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var users_1 = require("../models/users");
+var store = new users_1.UserStore();
+var secret = process.env.TOKEN_SECRET;
+var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, newUser, token, err_1;
     return __generator(this, function (_a) {
-        res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0:
+                user = {
+                    firstName: req.body.firstname,
+                    lastName: req.body.lastname,
+                    password: req.body.password
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(user)];
+            case 2:
+                newUser = _a.sent();
+                token = jsonwebtoken_1["default"].sign({ userId: newUser.id }, secret);
+                res.status(201).json({ token: token });
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                console.log(err_1);
+                res.status(400).json({ error: err_1 });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-}); });
-(0, ussers_1["default"])(app);
-app.get('*', function (req, res) {
-    res.status(200).json({ Message: 'Please provide a valid endpoint' });
-});
-app.listen(3000, function () {
-    console.log("starting app on: ".concat(address));
-});
-exports["default"] = app;
+}); };
+var userRoutes = function (app) {
+    app.post('/api/users', create);
+};
+exports["default"] = userRoutes;
