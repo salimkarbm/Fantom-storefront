@@ -21,4 +21,16 @@ export class ProductStore {
       throw new Error(`Unable to create product ${err}`);
     }
   }
+
+  async index(): Promise<Product[]> {
+    try {
+      const conn = await client.connect();
+      const sql = 'SELECT * FROM products';
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Unable to fetch products from database ${err}`);
+    }
+  }
 }

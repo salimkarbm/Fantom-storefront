@@ -17,9 +17,18 @@ const create = async (req: Request, res: Response) => {
     res.status(400).json({ error: err });
   }
 };
+const index = async (req: Request, res: Response) => {
+  try {
+    const products = await store.index();
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
 
 const productRoutes = (app: express.Application) => {
   app.post('/api/products', verifyAuthToken, create);
+  app.get('/api/products', verifyAuthToken, index);
 };
 
 export default productRoutes;
