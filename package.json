@@ -9,7 +9,7 @@
         "format": "npm run lint && npm run prettier",
         "prettier": "prettier --config .prettierrc --ignore-path .gitignore  --write './src/**/*.+(js|ts)'",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-        "test-db": "NODE_ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+        "test-db": "NODE_ENV=test db-migrate --env fantom_test up && jasmine-ts && db-migrate db:drop test",
         "tsc": "tsc"
     },
     "repository": {

@@ -20,9 +20,17 @@ const create = async (req: Request, res: Response) => {
     res.status(400).json({ error: err });
   }
 };
-
+const index = async (req: Request, res: Response) => {
+  try {
+    const users = await store.index();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
 const userRoutes = (app: express.Application) => {
   app.post('/api/users', create);
+  app.get('/api/users', index);
 };
 
 export default userRoutes;
