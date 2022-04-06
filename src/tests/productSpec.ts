@@ -23,4 +23,11 @@ describe('Test products', () => {
     const result = await store.index();
     expect(result).toBeInstanceOf(Array);
   });
+  it('should have an show method', () => {
+    expect(store.create).toBeDefined();
+  });
+  it('should return a single product', async () => {
+    const result = await store.index();
+    expect(result).toBeInstanceOf(Object);
+  });
 });

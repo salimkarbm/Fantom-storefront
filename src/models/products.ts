@@ -33,4 +33,17 @@ export class ProductStore {
       throw new Error(`Unable to fetch products from database ${err}`);
     }
   }
+
+  async show(id: string): Promise<Product> {
+    try {
+      const sql = `SELECT * FROM products WHERE id=${id}`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      const product = result.rows[0];
+      conn.release();
+      return product;
+    } catch (err) {
+      throw new Error(`unable to find products with id ${id}. Error: ${err}`);
+    }
+  }
 }

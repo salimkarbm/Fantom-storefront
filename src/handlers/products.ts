@@ -26,9 +26,19 @@ const index = async (req: Request, res: Response) => {
   }
 };
 
+const show = async (req: Request, res: Response) => {
+  try {
+    const product = await store.show(req.params.id);
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+};
+
 const productRoutes = (app: express.Application) => {
   app.post('/api/products', verifyAuthToken, create);
-  app.get('/api/products', verifyAuthToken, index);
+  app.get('/api/products', index);
+  app.get('/api/products/:id', show);
 };
 
 export default productRoutes;

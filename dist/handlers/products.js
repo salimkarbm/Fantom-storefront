@@ -84,8 +84,28 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.params.id)];
+            case 1:
+                product = _a.sent();
+                res.status(200).json(product);
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                res.status(400).json({ error: err_3 });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var productRoutes = function (app) {
     app.post('/api/products', users_1.verifyAuthToken, create);
-    app.get('/api/products', users_1.verifyAuthToken, index);
+    app.get('/api/products', index);
+    app.get('/api/products/:id', show);
 };
 exports["default"] = productRoutes;
