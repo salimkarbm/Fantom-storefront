@@ -35,28 +35,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var users_1 = __importDefault(require("./handlers/users"));
-var products_1 = __importDefault(require("./handlers/products"));
-var app = (0, express_1["default"])();
-var address = '0.0.0.0:3000';
-app.use(express_1["default"].json());
-app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var products_1 = require("../models/products");
+var users_1 = require("./users");
+var store = new products_1.ProductStore();
+var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, newProduct, err_1;
     return __generator(this, function (_a) {
-        res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0:
+                product = {
+                    name: req.body.name,
+                    price: req.body.price,
+                    category: req.body.category
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(product)];
+            case 2:
+                newProduct = _a.sent();
+                res.status(201).json(newProduct);
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                res.status(400).json({ error: err_1 });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-}); });
-(0, users_1["default"])(app);
-(0, products_1["default"])(app);
-app.get('*', function (req, res) {
-    res.status(200).json({ Message: 'Please provide a valid endpoint' });
-});
-app.listen(3000, function () {
-    console.log("starting app on: ".concat(address));
-});
-exports["default"] = app;
+}); };
+var productRoutes = function (app) {
+    app.post('/api/products', users_1.verifyAuthToken, create);
+};
+exports["default"] = productRoutes;

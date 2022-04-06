@@ -39,24 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var users_1 = __importDefault(require("./handlers/users"));
-var products_1 = __importDefault(require("./handlers/products"));
-var app = (0, express_1["default"])();
-var address = '0.0.0.0:3000';
-app.use(express_1["default"].json());
-app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
-        return [2 /*return*/];
-    });
-}); });
-(0, users_1["default"])(app);
-(0, products_1["default"])(app);
-app.get('*', function (req, res) {
-    res.status(200).json({ Message: 'Please provide a valid endpoint' });
-});
-app.listen(3000, function () {
-    console.log("starting app on: ".concat(address));
-});
-exports["default"] = app;
+exports.ProductStore = void 0;
+var database_1 = __importDefault(require("../database"));
+var ProductStore = /** @class */ (function () {
+    function ProductStore() {
+    }
+    ProductStore.prototype.create = function (product) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, values, conn, result, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'INSERT INTO products (name, price, category) VALUES($1,$2, $3) RETURNING *';
+                        values = [product.name, product.price, product.category];
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, values)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("Unable to create product ".concat(err_1));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return ProductStore;
+}());
+exports.ProductStore = ProductStore;
