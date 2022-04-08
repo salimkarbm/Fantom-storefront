@@ -16,7 +16,6 @@ const {
 let client: Pool;
 
 if (NODE_ENV === 'dev') {
-  console.log('dev');
   client = new Pool({
     host: POSTGRES_HOST,
     user: POSTGRES_USER,
@@ -25,7 +24,6 @@ if (NODE_ENV === 'dev') {
     port: parseInt(POSTGRES_PORT as string, 10),
   });
 } else {
-  console.log('test');
   client = new Pool({
     host: POSTGRES_HOST,
     user: POSTGRES_USER,

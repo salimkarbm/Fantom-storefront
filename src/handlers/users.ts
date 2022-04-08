@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
 import { User, UserStore } from '../models/users';
-//import { customRequest } from '../customreq/index';
 
 const store = new UserStore();
 
@@ -17,7 +16,6 @@ const create = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: newUser.id }, secret);
     res.status(201).json({ token: token });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: err });
   }
 };
