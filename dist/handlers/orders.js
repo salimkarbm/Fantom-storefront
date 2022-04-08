@@ -8,13 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = __importDefault(require("../database"));
-describe('Database Test', () => {
-    it('it expects database to be connected', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield database_1.default.connect();
-    }));
+const orders_1 = require("../models/orders");
+const users_1 = require("./users");
+const store = new orders_1.OrderStore();
+const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const order = {
+        status: req.body.status,
+        userId: req.body.userId,
+    };
+    try {
+        const orders = yield store.create(order);
+        res.status(201).json(orders);
+    }
+    catch (err) {
+        res.status(400).json({ error: err });
+    }
 });
+const orderRoutes = (app) => {
+    app.post('/api/orders', users_1.verifyAuthToken, create);
+};
+exports.default = orderRoutes;

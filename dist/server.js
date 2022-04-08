@@ -44,6 +44,7 @@ var users_1 = __importDefault(require("./handlers/users"));
 var products_1 = __importDefault(require("./handlers/products"));
 var app = (0, express_1["default"])();
 var address = '0.0.0.0:3000';
+var PORT = process.env.PORT || 3000;
 app.use(express_1["default"].json());
 app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -56,7 +57,7 @@ app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, func
 app.get('*', function (req, res) {
     res.status(200).json({ Message: 'Please provide a valid endpoint' });
 });
-app.listen(3000, function () {
+app.listen(PORT, function () {
     console.log("starting app on: ".concat(address));
 });
 exports["default"] = app;

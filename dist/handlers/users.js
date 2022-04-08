@@ -65,6 +65,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
+                console.log(err_1);
                 res.status(400).json({ error: err_1 });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
@@ -140,7 +141,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 var verifyAuthToken = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, decoded, error_1;
+    var token, decoded, currentUser, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -158,7 +159,8 @@ var verifyAuthToken = function (req, res, next) { return __awaiter(void 0, void 
                 decoded = jsonwebtoken_1["default"].verify(token, secret);
                 return [4 /*yield*/, store.show(decoded.userId)];
             case 1:
-                _a.sent();
+                currentUser = _a.sent();
+                req.user = currentUser;
                 next();
                 return [3 /*break*/, 3];
             case 2:

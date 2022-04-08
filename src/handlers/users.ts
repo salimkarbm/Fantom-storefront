@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import { User, UserStore } from '../models/users';
+import { customRequest } from '../customreq/index';
 
 const store = new UserStore();
-const secret = process.env.TOKEN_SECRET as string;
 
+const secret: Secret = process.env.TOKEN_SECRET as string;
 const create = async (req: Request, res: Response) => {
   const user: User = {
     firstName: req.body.firstname,
@@ -16,6 +17,7 @@ const create = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: newUser.id }, secret);
     res.status(201).json({ token: token });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: err });
   }
 };
@@ -59,7 +61,7 @@ const authenticate = async (req: Request, res: Response) => {
   }
 };
 export const verifyAuthToken = async (
-  req: Request,
+  req: customRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -82,7 +84,8 @@ export const verifyAuthToken = async (
       exp: number;
     }
     const decoded = jwt.verify(token, secret) as unknown as myToken;
-    await store.show(decoded.userId);
+    const currentUser = await store.show(decoded.userId);
+    req.user = currentUser;
     next();
   } catch (error) {
     res.status(401).json({ message: 'invalid token' });

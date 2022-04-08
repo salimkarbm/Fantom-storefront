@@ -16,7 +16,6 @@ export class UserStore {
       password: user.password,
     };
     const saltRound = parseInt(process.env.SALT_ROUNDS as string, 10);
-
     try {
       const conn = await client.connect();
       const sql =

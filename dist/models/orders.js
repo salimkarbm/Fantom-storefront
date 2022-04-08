@@ -12,9 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OrderStore = void 0;
 const database_1 = __importDefault(require("../database"));
-describe('Database Test', () => {
-    it('it expects database to be connected', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield database_1.default.connect();
-    }));
-});
+class OrderStore {
+    create(order) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = 'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *';
+                const values = [order.status, order.userId];
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, values);
+                conn.release();
+                return result.rows[0];
+            }
+            catch (err) {
+                throw new Error(`could not create order ${err}`);
+            }
+        });
+    }
+}
+exports.OrderStore = OrderStore;

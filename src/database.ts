@@ -15,21 +15,21 @@ const {
 
 let client: Pool;
 
-if (NODE_ENV === 'test') {
-  console.log('test');
-  client = new Pool({
-    host: POSTGRES_HOST,
-    user: POSTGRES_USER,
-    database: POSTGRES_TEST_DB,
-    password: POSTGRES_PASSWORD,
-    port: parseInt(POSTGRES_PORT as string, 10),
-  });
-} else {
+if (NODE_ENV === 'dev') {
   console.log('dev');
   client = new Pool({
     host: POSTGRES_HOST,
     user: POSTGRES_USER,
     database: POSTGRES_DB,
+    password: POSTGRES_PASSWORD,
+    port: parseInt(POSTGRES_PORT as string, 10),
+  });
+} else {
+  console.log('test');
+  client = new Pool({
+    host: POSTGRES_HOST,
+    user: POSTGRES_USER,
+    database: POSTGRES_TEST_DB,
     password: POSTGRES_PASSWORD,
     port: parseInt(POSTGRES_PORT as string, 10),
   });

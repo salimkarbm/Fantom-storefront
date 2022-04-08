@@ -136,7 +136,6 @@ var ProductStore = /** @class */ (function () {
                         return [2 /*return*/, result.rows];
                     case 3:
                         err_4 = _a.sent();
-                        console.error(err_4);
                         throw new Error("".concat(category, " does not exist.").concat(err_4));
                     case 4: return [2 /*return*/];
                 }
