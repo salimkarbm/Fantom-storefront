@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
 import { User, UserStore } from '../models/users';
-import { customRequest } from '../customreq/index';
+//import { customRequest } from '../customreq/index';
 
 const store = new UserStore();
 
@@ -61,7 +61,7 @@ const authenticate = async (req: Request, res: Response) => {
   }
 };
 export const verifyAuthToken = async (
-  req: customRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

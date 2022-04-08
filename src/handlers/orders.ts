@@ -7,7 +7,7 @@ const store = new OrderStore();
 const create = async (req: Request, res: Response) => {
   const order: Order = {
     status: req.body.status,
-    userId: req.body.id,
+    userId: String(req.user.id),
   };
   try {
     const orders = await store.create(order);

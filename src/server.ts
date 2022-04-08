@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import userRoutes from './handlers/users';
 import productRoutes from './handlers/products';
+import orderRoutes from './handlers/orders';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
@@ -15,6 +16,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 userRoutes(app);
 productRoutes(app);
+orderRoutes(app);
 
 app.get('*', (req: Request, res: Response) => {
   res.status(200).json({ Message: 'Please provide a valid endpoint' });

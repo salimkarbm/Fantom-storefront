@@ -15,7 +15,7 @@ const store = new orders_1.OrderStore();
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const order = {
         status: req.body.status,
-        userId: req.body.userId,
+        userId: String(req.user.id),
     };
     try {
         const orders = yield store.create(order);
