@@ -21,13 +21,12 @@ describe('Test Users', () => {
         expect(store.create).toBeDefined();
     });
     it('should return created user', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.create(user);
-        expect(result).toBeTruthy();
+        yield expectAsync(store.create(user)).toBeResolved();
     }));
     it('should have a index method', () => {
         expect(store.index).toBeDefined();
     });
-    it('should return an array of all users', () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should return an list of all users', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.index();
         expect(result).toBeInstanceOf(Array);
     }));
@@ -35,8 +34,7 @@ describe('Test Users', () => {
         expect(store.index).toBeDefined();
     });
     it('should return a single user', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.index();
-        expect(result).toBeInstanceOf(Object);
+        yield expectAsync(store.index()).toBeResolved();
     }));
     it('should have an authenticate method', () => {
         expect(store.authenticate).toBeDefined();

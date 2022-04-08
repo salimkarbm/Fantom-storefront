@@ -15,6 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 describe('Database Test', () => {
     it('it expects database to be connected', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield database_1.default.connect();
+        yield expectAsync(database_1.default.connect()).toBeResolved();
     }));
 });

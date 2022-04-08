@@ -21,8 +21,7 @@ describe('Test products', () => {
         expect(store.create).toBeDefined();
     });
     it('should return created product', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.create(product);
-        expect(result).toBeTruthy();
+        yield expectAsync(store.create(product)).toBeResolved();
     }));
     it('should have an index method', () => {
         expect(store.create).toBeDefined();
@@ -35,14 +34,12 @@ describe('Test products', () => {
         expect(store.create).toBeDefined();
     });
     it('should return a single product', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.index();
-        expect(result).toBeInstanceOf(Object);
+        yield expectAsync(store.index()).toBeResolved();
     }));
     it('should have a productByCategory method', () => {
         expect(store.productByCategory).toBeDefined();
     });
     it('should return all product that belong to the same category', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.index();
-        expect(result).toBeInstanceOf(Object);
+        yield expectAsync(store.index()).toBeResolved();
     }));
 });

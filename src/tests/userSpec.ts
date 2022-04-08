@@ -11,13 +11,12 @@ describe('Test Users', () => {
     expect(store.create).toBeDefined();
   });
   it('should return created user', async () => {
-    const result = await store.create(user);
-    expect(result).toBeTruthy();
+    await expectAsync(store.create(user)).toBeResolved();
   });
   it('should have a index method', () => {
     expect(store.index).toBeDefined();
   });
-  it('should return an array of all users', async () => {
+  it('should return an list of all users', async () => {
     const result = await store.index();
     expect(result).toBeInstanceOf(Array);
   });
@@ -25,8 +24,7 @@ describe('Test Users', () => {
     expect(store.index).toBeDefined();
   });
   it('should return a single user', async () => {
-    const result = await store.index();
-    expect(result).toBeInstanceOf(Object);
+    await expectAsync(store.index()).toBeResolved();
   });
   it('should have an authenticate method', () => {
     expect(store.authenticate).toBeDefined();
