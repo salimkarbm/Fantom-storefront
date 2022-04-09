@@ -45,4 +45,21 @@ export class OrderStore {
       throw new Error(`could not find order with id ${id}. ${err}`);
     }
   }
+
+  async addProduct(
+    quantity: number,
+    orderId: string,
+    productId: string
+  ): Promise<Order> {
+    try {
+      const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES($1,$2,$3) RETURNING *`;
+      const conn = await client.connect();
+      const result = await conn.query(sql, [quantity, orderId, productId]);
+      const addProduct = result.rows[0];
+      conn.release();
+      return addProduct;
+    } catch (err) {
+      throw new Error(`unable to add product with id ${productId} ${err}`);
+    }
+  }
 }
