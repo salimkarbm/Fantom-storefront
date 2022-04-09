@@ -26,9 +26,19 @@ const index = async (req: Request, res: Response) => {
   }
 };
 
+const show = async (req: Request, res: Response) => {
+  try {
+    const order = await store.show(req.params.id);
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+};
+
 const orderRoutes = (app: express.Application) => {
   app.post('/api/orders', verifyAuthToken, create);
   app.get('/api/orders', verifyAuthToken, index);
+  app.get('/api/orders/:id', verifyAuthToken, show);
 };
 
 export default orderRoutes;

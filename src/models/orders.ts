@@ -32,4 +32,17 @@ export class OrderStore {
       throw new Error(`unable to fetch orders from database ${err}`);
     }
   }
+
+  async show(id: string): Promise<Order> {
+    try {
+      const sql = `SELECT * FROM orders WHERE id=${id}`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      const order = result.rows[0];
+      conn.release();
+      return order;
+    } catch (err) {
+      throw new Error(`could not find order with id ${id}. ${err}`);
+    }
+  }
 }
