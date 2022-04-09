@@ -10,32 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const orders_1 = require("../models/orders");
-const users_1 = require("./users");
 const store = new orders_1.OrderStore();
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const order = {
-        status: req.body.status,
-        userId: String(req.user.id),
-    };
-    try {
-        const orders = yield store.create(order);
-        res.status(201).json(orders);
-    }
-    catch (err) {
-        res.status(400).json({ error: err });
-    }
-});
-const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const orders = yield store.index();
-        res.status(200).json(orders);
-    }
-    catch (err) {
-        res.status(400).json({ err });
-    }
-});
-const orderRoutes = (app) => {
-    app.post('/api/orders', users_1.verifyAuthToken, create);
-    app.get('/api/orders', users_1.verifyAuthToken, index);
+const order = {
+    id: '1',
+    status: 'pending',
+    userId: '15',
 };
-exports.default = orderRoutes;
+describe('Test products', () => {
+    it('should have a create method', () => {
+        expect(store.create).toBeDefined();
+    });
+    it('should return created order', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield expectAsync(store.create(order)).toBeResolved();
+    }));
+    it('should have a create method', () => {
+        expect(store.index).toBeDefined();
+    });
+    it('should return created order', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield expectAsync(store.create(order)).toBeResolved();
+    }));
+});

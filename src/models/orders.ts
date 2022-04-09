@@ -20,4 +20,16 @@ export class OrderStore {
       throw new Error(`could not create order ${err}`);
     }
   }
+
+  async index(): Promise<Order[]> {
+    try {
+      const conn = await client.connect();
+      const sql = 'SELECT * FROM orders';
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`unable to fetch orders from database ${err}`);
+    }
+  }
 }

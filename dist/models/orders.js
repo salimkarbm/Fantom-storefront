@@ -30,5 +30,19 @@ class OrderStore {
             }
         });
     }
+    index() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const conn = yield database_1.default.connect();
+                const sql = 'SELECT * FROM orders';
+                const result = yield conn.query(sql);
+                conn.release();
+                return result.rows;
+            }
+            catch (err) {
+                throw new Error(`unable to fetch orders from database ${err}`);
+            }
+        });
+    }
 }
 exports.OrderStore = OrderStore;
