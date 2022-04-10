@@ -46,6 +46,20 @@ export class OrderStore {
     }
   }
 
+  async showUserOrders(userId: string): Promise<Order[]> {
+    try {
+      const sql = `SELECT * FROM orders WHERE user_id=${userId};`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `There was an error with finding orders for user with ID ${userId}.${err}`
+      );
+    }
+  }
+
   async addProduct(
     quantity: number,
     orderId: string,

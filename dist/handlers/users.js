@@ -52,9 +52,9 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
-        firstName: req.body.firstname.trim(),
-        lastName: req.body.lastname.trim(),
-        password: req.body.password.trim(),
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
+        password: req.body.password,
     };
     try {
         const authenticateUser = yield store.authenticate(user.firstName, user.lastName, user.password);
@@ -86,6 +86,7 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         next();
     }
     catch (error) {
+        console.log(error);
         res.status(401).json({ message: 'invalid token' });
     }
 });

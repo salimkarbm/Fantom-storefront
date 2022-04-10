@@ -44,5 +44,49 @@ class OrderStore {
             }
         });
     }
+    show(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `SELECT * FROM orders WHERE id=${id}`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                const order = result.rows[0];
+                conn.release();
+                return order;
+            }
+            catch (err) {
+                throw new Error(`could not find order with id ${id}. ${err}`);
+            }
+        });
+    }
+    showUserOrders(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `SELECT * FROM orders WHERE user_id=${userId};`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                conn.release();
+                return result.rows;
+            }
+            catch (err) {
+                throw new Error(`There was an error with finding orders for user with ID ${userId}.${err}`);
+            }
+        });
+    }
+    addProduct(quantity, orderId, productId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES($1,$2,$3) RETURNING *`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, [quantity, orderId, productId]);
+                const addProduct = result.rows[0];
+                conn.release();
+                return addProduct;
+            }
+            catch (err) {
+                throw new Error(`unable to add product with id ${productId} ${err}`);
+            }
+        });
+    }
 }
 exports.OrderStore = OrderStore;

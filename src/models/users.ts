@@ -55,7 +55,7 @@ export class UserStore {
       conn.release();
       return book;
     } catch (err) {
-      throw new Error(`unable find user with id ${id}. Error: ${err}`);
+      throw new Error(`unable find user with id ${id}. ${err}`);
     }
   }
 

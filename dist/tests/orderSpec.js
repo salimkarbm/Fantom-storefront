@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+//import { Request, Response } from 'express';
 const orders_1 = require("../models/orders");
 const store = new orders_1.OrderStore();
 const order = {
@@ -23,10 +24,16 @@ describe('Test products', () => {
     it('should return created order', () => __awaiter(void 0, void 0, void 0, function* () {
         yield expectAsync(store.create(order)).toBeResolved();
     }));
-    it('should have a create method', () => {
+    it('should have a index method', () => {
         expect(store.index).toBeDefined();
     });
-    it('should return created order', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield expectAsync(store.create(order)).toBeResolved();
+    it('should return list of orders', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield expectAsync(store.index()).toBeResolved();
     }));
+    // xit('should have a show method', () => {
+    //   expect(store.show()).toBeDefined();
+    // });
+    // xit('should return a single item', async () => {
+    //   await expectAsync(store.show()).toBeResolved();
+    // });
 });

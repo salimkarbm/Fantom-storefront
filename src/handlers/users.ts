@@ -1,10 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { User, UserStore } from '../models/users';
 
 const store = new UserStore();
 
-const secret: Secret = process.env.TOKEN_SECRET as string;
+const secret = process.env.TOKEN_SECRET as string;
 const create = async (req: Request, res: Response) => {
   const user: User = {
     firstName: req.body.firstname,
@@ -39,9 +39,9 @@ const show = async (req: Request, res: Response) => {
 
 const authenticate = async (req: Request, res: Response) => {
   const user: User = {
-    firstName: req.body.firstname.trim(),
-    lastName: req.body.lastname.trim(),
-    password: req.body.password.trim(),
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    password: req.body.password,
   };
   try {
     const authenticateUser = await store.authenticate(
@@ -83,6 +83,7 @@ export const verifyAuthToken = async (
     }
     const decoded = jwt.verify(token, secret) as unknown as myToken;
     const currentUser = await store.show(decoded.userId);
+
     req.user = currentUser;
     next();
   } catch (error) {
