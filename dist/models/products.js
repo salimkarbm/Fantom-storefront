@@ -69,12 +69,26 @@ class ProductStore {
                     product.price,
                     product.category,
                 ]);
-                console.log(result);
                 conn.release();
                 return result.rows[0];
             }
             catch (err) {
                 throw new Error(`Something went wrong unable to update product with ID:${id}`);
+            }
+        });
+    }
+    destroy(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `DELETE FROM products WHERE id=${id};`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, [id]);
+                const products = result.rows[0];
+                conn.release();
+                return products;
+            }
+            catch (err) {
+                throw new Error(`Cannot delete user with id = ${id}`);
             }
         });
     }
