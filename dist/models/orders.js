@@ -73,6 +73,21 @@ class OrderStore {
             }
         });
     }
+    destroy(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `DELETE FROM orders WHERE id=${id}`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                const order = result.rows[0];
+                conn.release();
+                return order;
+            }
+            catch (err) {
+                throw new Error(`Something went wrong unable to delete order with id = ${id}`);
+            }
+        });
+    }
     addProduct(quantity, orderId, productId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

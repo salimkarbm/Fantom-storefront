@@ -66,8 +66,8 @@ export class UserStore {
   async authenticate(email: string, password: string): Promise<User | null> {
     try {
       const conn = await client.connect();
-      const sql = 'SELECT email, password_digest FROM users WHERE email = ($1)';
-      const result = await conn.query(sql, [email]);
+      const sql = `SELECT id, email, password_digest FROM users WHERE email='${email}'`;
+      const result = await conn.query(sql);
       if (result.rows.length > 0) {
         const user = result.rows[0];
         if (await bcrypt.compare(password + pepper, user.password_digest)) {
@@ -100,7 +100,7 @@ export class UserStore {
     }
   }
 
-  async delete(id: string): Promise<string> {
+  async destroy(id: string): Promise<string> {
     try {
       const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;
       const conn = await client.connect();

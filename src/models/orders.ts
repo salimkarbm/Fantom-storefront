@@ -60,6 +60,21 @@ export class OrderStore {
     }
   }
 
+  async destroy(id: string): Promise<string> {
+    try {
+      const sql = `DELETE FROM orders WHERE id=${id}`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      const order = result.rows[0];
+      conn.release();
+      return order;
+    } catch (err) {
+      throw new Error(
+        `Something went wrong unable to delete order with id = ${id}`
+      );
+    }
+  }
+
   async addProduct(
     quantity: number,
     orderId: string,

@@ -23,6 +23,9 @@ const create = async (req: Request, res: Response) => {
 const index = async (req: Request, res: Response) => {
   try {
     const users = await store.index();
+    if (!users) {
+      return res.status(404).json({ message: 'user not found' });
+    }
     res.status(200).json(users);
   } catch (err) {
     res.status(400).json({ err });
@@ -33,26 +36,6 @@ const show = async (req: Request, res: Response) => {
   try {
     const user = await store.show(req.params.id);
     res.status(200).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err });
-  }
-};
-
-const authenticate = async (req: Request, res: Response) => {
-  const user: User = {
-    password: req.body.password,
-    email: req.body.email,
-  };
-  try {
-    const authenticateUser = await store.authenticate(
-      user.email,
-      user.password
-    );
-    if (authenticateUser === null) {
-      return res.status(401).json({ message: 'incorrect password' });
-    }
-    const token = jwt.sign({ userId: authenticateUser.id }, secret);
-    res.status(200).json(token);
   } catch (err) {
     res.status(400).json({ error: err });
   }
@@ -82,11 +65,37 @@ export const verifyAuthToken = async (
     }
     const decoded = jwt.verify(token, secret) as unknown as myToken;
     const currentUser = await store.show(decoded.userId);
-
-    req.user = currentUser;
-    next();
+    if (currentUser) {
+      req.user = currentUser;
+      next();
+    }
   } catch (error) {
     res.status(401).json({ message: 'invalid token' });
+  }
+};
+
+const authenticate = async (req: Request, res: Response) => {
+  const user: User = {
+    password: req.body.password,
+    email: req.body.email,
+  };
+  if (!user.email || !user.password) {
+    return res
+      .status(400)
+      .json({ message: 'please provide valid email and password' });
+  }
+  try {
+    const authenticateUser = await store.authenticate(
+      user.email,
+      user.password
+    );
+    if (authenticateUser === null) {
+      return res.status(401).json({ message: 'incorrect password' });
+    }
+    const token = jwt.sign({ userId: authenticateUser.id }, secret);
+    res.status(200).json(token);
+  } catch (err) {
+    res.status(400).json({ error: err });
   }
 };
 
@@ -101,14 +110,13 @@ const updateMe = async (req: Request, res: Response) => {
     );
     res.status(200).json(updateUser);
   } catch (err) {
-    console.log(err);
     res.status(404).json({ error: err });
   }
 };
 
 const destroy = async (req: Request, res: Response) => {
   try {
-    await store.delete(req.params.id);
+    await store.destroy(req.params.id);
     res.status(204).json({ message: 'deleted successfully' });
   } catch (err) {
     res.status(400).json({ error: err });

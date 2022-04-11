@@ -36,9 +36,13 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield store.index();
+        if (!users) {
+            return res.status(404).json({ message: 'user not found' });
+        }
         res.status(200).json(users);
     }
     catch (err) {
+        console.log(err);
         res.status(400).json({ err });
     }
 });
@@ -46,23 +50,6 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield store.show(req.params.id);
         res.status(200).json(user);
-    }
-    catch (err) {
-        res.status(400).json({ error: err });
-    }
-});
-const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = {
-        password: req.body.password,
-        email: req.body.email,
-    };
-    try {
-        const authenticateUser = yield store.authenticate(user.email, user.password);
-        if (authenticateUser === null) {
-            return res.status(401).json({ message: 'incorrect password' });
-        }
-        const token = jsonwebtoken_1.default.sign({ userId: authenticateUser.id }, secret);
-        res.status(200).json(token);
     }
     catch (err) {
         res.status(400).json({ error: err });
@@ -82,14 +69,38 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         }
         const decoded = jsonwebtoken_1.default.verify(token, secret);
         const currentUser = yield store.show(decoded.userId);
-        req.user = currentUser;
-        next();
+        if (currentUser) {
+            req.user = currentUser;
+            next();
+        }
     }
     catch (error) {
         res.status(401).json({ message: 'invalid token' });
     }
 });
 exports.verifyAuthToken = verifyAuthToken;
+const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = {
+        password: req.body.password,
+        email: req.body.email,
+    };
+    if (!user.email || !user.password) {
+        return res
+            .status(400)
+            .json({ message: 'please provide valid email and password' });
+    }
+    try {
+        const authenticateUser = yield store.authenticate(user.email, user.password);
+        if (authenticateUser === null) {
+            return res.status(401).json({ message: 'incorrect password' });
+        }
+        const token = jsonwebtoken_1.default.sign({ userId: authenticateUser.id }, secret);
+        res.status(200).json(token);
+    }
+    catch (err) {
+        res.status(400).json({ error: err });
+    }
+});
 const updateMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstname, lastname, email } = req.body;
     try {
@@ -97,7 +108,6 @@ const updateMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(updateUser);
     }
     catch (err) {
-        console.log(err);
         res.status(404).json({ error: err });
     }
 });

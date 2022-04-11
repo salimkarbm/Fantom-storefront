@@ -52,6 +52,15 @@ const showUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(err);
     }
 });
+const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderToDelete = yield store.destroy(req.params.id);
+        res.json(orderToDelete);
+    }
+    catch (err) {
+        res.status(400).send(err);
+    }
+});
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const orderId = req.params.id;
     const productId = req.params.id;
@@ -69,6 +78,7 @@ const orderRoutes = (app) => {
     app.get('/api/orders', users_1.verifyAuthToken, index); //show all orders
     app.get('/api/orders/:id', users_1.verifyAuthToken, show); //show only one order
     app.get('/api/users/:id/orders', users_1.verifyAuthToken, showUserOrders); //show current orders by user (id)
+    app.delete('/api/orders/:id', users_1.verifyAuthToken, destroy);
     app.post('/api/orders/:id/product/:id', users_1.verifyAuthToken, addProduct);
 };
 exports.default = orderRoutes;

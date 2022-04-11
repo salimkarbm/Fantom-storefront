@@ -77,8 +77,8 @@ class UserStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'SELECT email, password_digest FROM users WHERE email = ($1)';
-                const result = yield conn.query(sql, [email]);
+                const sql = `SELECT id, email, password_digest FROM users WHERE email='${email}'`;
+                const result = yield conn.query(sql);
                 if (result.rows.length > 0) {
                     const user = result.rows[0];
                     if (yield bcrypt_1.default.compare(password + pepper, user.password_digest)) {
@@ -95,15 +95,15 @@ class UserStore {
     updateMe(id, firstname, lastname, email) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', email='${email}',WHERE id='${id}' RETURNING *`;
+                const sql = `UPDATE users SET firstname=($1), lastname=($2), email=($3) WHERE id=${id} RETURNING *`;
                 const conn = yield database_1.default.connect();
-                const result = yield conn.query(sql);
+                const result = yield conn.query(sql, [firstname, lastname, email]);
                 const user = result.rows[0];
                 conn.release();
                 return user;
             }
             catch (err) {
-                throw new Error(`Something went wrong could not update user with ${email}, ${err}`);
+                throw new Error(`Something went wrong unable to update user with Email: ${email}, ${err}`);
             }
         });
     }
