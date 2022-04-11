@@ -90,13 +90,23 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.verifyAuthToken = verifyAuthToken;
+const updateMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { firstname, lastname, email } = req.body;
+    try {
+        const updateUser = yield store.updateMe(req.params.id, firstname, lastname, email);
+        res.status(200).json(updateUser);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(404).json({ error: err });
+    }
+});
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield store.delete(req.params.id);
         res.status(204).json({ message: 'deleted successfully' });
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: err });
     }
 });
@@ -105,6 +115,7 @@ const userRoutes = (app) => {
     app.get('/api/users', exports.verifyAuthToken, index);
     app.get('/api/users/:id', exports.verifyAuthToken, show);
     app.post('/api/login', exports.verifyAuthToken, authenticate);
+    app.patch('/api/users/:id', exports.verifyAuthToken, updateMe);
     app.delete('/api/users/:id', exports.verifyAuthToken, destroy);
 };
 exports.default = userRoutes;

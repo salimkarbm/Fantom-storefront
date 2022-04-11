@@ -80,6 +80,26 @@ export class UserStore {
     }
   }
 
+  async updateMe(
+    id: string,
+    firstname: string,
+    lastname: string,
+    email: string
+  ): Promise<User> {
+    try {
+      const sql = `UPDATE users SET firstname=($1), lastname=($2), email=($3) WHERE id=${id} RETURNING *`;
+      const conn = await client.connect();
+      const result = await conn.query(sql, [firstname, lastname, email]);
+      const user = result.rows[0];
+      conn.release();
+      return user;
+    } catch (err) {
+      throw new Error(
+        `Something went wrong unable to update user with Email: ${email}, ${err}`
+      );
+    }
+  }
+
   async delete(id: string): Promise<string> {
     try {
       const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;

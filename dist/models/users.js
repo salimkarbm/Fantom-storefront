@@ -92,6 +92,21 @@ class UserStore {
             }
         });
     }
+    updateMe(id, firstname, lastname, email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `UPDATE users SET firstname='${firstname}', lastname='${lastname}', email='${email}',WHERE id='${id}' RETURNING *`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                const user = result.rows[0];
+                conn.release();
+                return user;
+            }
+            catch (err) {
+                throw new Error(`Something went wrong could not update user with ${email}, ${err}`);
+            }
+        });
+    }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

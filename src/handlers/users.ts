@@ -90,12 +90,27 @@ export const verifyAuthToken = async (
   }
 };
 
+const updateMe = async (req: Request, res: Response) => {
+  const { firstname, lastname, email } = req.body;
+  try {
+    const updateUser = await store.updateMe(
+      req.params.id,
+      firstname,
+      lastname,
+      email
+    );
+    res.status(200).json(updateUser);
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ error: err });
+  }
+};
+
 const destroy = async (req: Request, res: Response) => {
   try {
     await store.delete(req.params.id);
     res.status(204).json({ message: 'deleted successfully' });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: err });
   }
 };
@@ -105,6 +120,7 @@ const userRoutes = (app: express.Application) => {
   app.get('/api/users', verifyAuthToken, index);
   app.get('/api/users/:id', verifyAuthToken, show);
   app.post('/api/login', verifyAuthToken, authenticate);
+  app.patch('/api/users/:id', verifyAuthToken, updateMe);
   app.delete('/api/users/:id', verifyAuthToken, destroy);
 };
 
