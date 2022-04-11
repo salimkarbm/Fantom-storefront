@@ -2,8 +2,7 @@ import { User, UserStore } from '../models/users';
 
 const store = new UserStore();
 const user: User = {
-  firstName: 'john',
-  lastName: 'joe',
+  email: 'example@gmail.com',
   password: '1234',
 };
 describe('Test Users', () => {
@@ -30,11 +29,7 @@ describe('Test Users', () => {
     expect(store.authenticate).toBeDefined();
   });
   it('should return token', async () => {
-    const result = await store.authenticate(
-      user.firstName,
-      user.lastName,
-      user.password
-    );
+    const result = await store.authenticate(user.email, user.password);
     expect(result).toBeFalsy();
   });
 });

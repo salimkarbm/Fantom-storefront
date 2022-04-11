@@ -12,8 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../models/users");
 const store = new users_1.UserStore();
 const user = {
-    firstName: 'john',
-    lastName: 'joe',
+    email: 'example@gmail.com',
     password: '1234',
 };
 describe('Test Users', () => {
@@ -40,7 +39,7 @@ describe('Test Users', () => {
         expect(store.authenticate).toBeDefined();
     });
     it('should return token', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield store.authenticate(user.firstName, user.lastName, user.password);
+        const result = yield store.authenticate(user.email, user.password);
         expect(result).toBeFalsy();
     }));
 });

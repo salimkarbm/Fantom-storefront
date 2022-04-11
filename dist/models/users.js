@@ -23,16 +23,18 @@ class UserStore {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 password: user.password,
+                email: user.email,
             };
             const saltRound = parseInt(process.env.SALT_ROUNDS, 10);
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'INSERT INTO users (firstname, lastname, password_digest) VALUES($1, $2, $3) RETURNING * ';
+                const sql = 'INSERT INTO users (firstname, lastname, password_digest, email) VALUES($1, $2, $3, $4) RETURNING * ';
                 const hash = yield bcrypt_1.default.hash(newUser.password + pepper, saltRound);
                 const result = yield conn.query(sql, [
                     newUser.firstName,
                     newUser.lastName,
                     hash,
+                    newUser.email,
                 ]);
                 conn.release();
                 return result.rows[0];
@@ -71,12 +73,12 @@ class UserStore {
             }
         });
     }
-    authenticate(firstname, lastname, password) {
+    authenticate(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'SELECT firstname, lastname, password_digest FROM users WHERE firstname = ($1) AND lastname = ($2)';
-                const result = yield conn.query(sql, [firstname, lastname]);
+                const sql = 'SELECT email, password_digest FROM users WHERE email = ($1)';
+                const result = yield conn.query(sql, [email]);
                 if (result.rows.length > 0) {
                     const user = result.rows[0];
                     if (yield bcrypt_1.default.compare(password + pepper, user.password_digest)) {
@@ -87,6 +89,21 @@ class UserStore {
             }
             catch (err) {
                 throw new Error(`Unable to authenticate user ${err}`);
+            }
+        });
+    }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                const user = result.rows[0];
+                conn.release();
+                return user;
+            }
+            catch (err) {
+                throw new Error(`Unable to delete user with ${id}, Error: ${err}`);
             }
         });
     }

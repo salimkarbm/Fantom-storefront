@@ -7,12 +7,12 @@
         "start": "node ./dist/server.js",
         "jasmine": "jasmine",
         "test": "npm run tsc && npm run jasmine",
-        "dev": "nodemon --files ./src/server.ts",
+        "dev": " npm run tsc && nodemon --files ./src/server.ts",
         "lint": "eslint --ext .ts . --fix",
         "format": "npm run lint && npm run prettier",
         "prettier": "prettier --config .prettierrc --ignore-path .gitignore  --write './src/**/*.+(js|ts)'",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-        "test-migration": "NODE_ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+        "test-db": "NODE_ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
         "tsc": "tsc"
     },
     "repository": {

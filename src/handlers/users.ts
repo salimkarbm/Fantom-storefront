@@ -10,6 +10,7 @@ const create = async (req: Request, res: Response) => {
     firstName: req.body.firstname,
     lastName: req.body.lastname,
     password: req.body.password,
+    email: req.body.email,
   };
   try {
     const newUser = await store.create(user);
@@ -39,14 +40,12 @@ const show = async (req: Request, res: Response) => {
 
 const authenticate = async (req: Request, res: Response) => {
   const user: User = {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
     password: req.body.password,
+    email: req.body.email,
   };
   try {
     const authenticateUser = await store.authenticate(
-      user.firstName,
-      user.lastName,
+      user.email,
       user.password
     );
     if (authenticateUser === null) {
@@ -90,11 +89,23 @@ export const verifyAuthToken = async (
     res.status(401).json({ message: 'invalid token' });
   }
 };
+
+const destroy = async (req: Request, res: Response) => {
+  try {
+    await store.delete(req.params.id);
+    res.status(204).json({ message: 'deleted successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err });
+  }
+};
+
 const userRoutes = (app: express.Application) => {
   app.post('/api/users', create);
   app.get('/api/users', verifyAuthToken, index);
   app.get('/api/users/:id', verifyAuthToken, show);
   app.post('/api/login', verifyAuthToken, authenticate);
+  app.delete('/api/users/:id', verifyAuthToken, destroy);
 };
 
 export default userRoutes;

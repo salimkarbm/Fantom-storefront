@@ -44,13 +44,11 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const showUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.params.id);
     try {
         const orders = yield store.showUserOrders(req.params.id);
         res.json(orders);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json(err);
     }
 });

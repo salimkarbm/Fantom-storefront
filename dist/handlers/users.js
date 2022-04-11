@@ -22,6 +22,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         firstName: req.body.firstname,
         lastName: req.body.lastname,
         password: req.body.password,
+        email: req.body.email,
     };
     try {
         const newUser = yield store.create(user);
@@ -52,12 +53,11 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
-        firstName: req.body.firstname,
-        lastName: req.body.lastname,
         password: req.body.password,
+        email: req.body.email,
     };
     try {
-        const authenticateUser = yield store.authenticate(user.firstName, user.lastName, user.password);
+        const authenticateUser = yield store.authenticate(user.email, user.password);
         if (authenticateUser === null) {
             return res.status(401).json({ message: 'incorrect password' });
         }
@@ -86,15 +86,25 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         next();
     }
     catch (error) {
-        console.log(error);
         res.status(401).json({ message: 'invalid token' });
     }
 });
 exports.verifyAuthToken = verifyAuthToken;
+const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield store.delete(req.params.id);
+        res.status(204).json({ message: 'deleted successfully' });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).json({ error: err });
+    }
+});
 const userRoutes = (app) => {
     app.post('/api/users', create);
     app.get('/api/users', exports.verifyAuthToken, index);
     app.get('/api/users/:id', exports.verifyAuthToken, show);
     app.post('/api/login', exports.verifyAuthToken, authenticate);
+    app.delete('/api/users/:id', exports.verifyAuthToken, destroy);
 };
 exports.default = userRoutes;

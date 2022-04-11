@@ -3,9 +3,11 @@ import client from '../database';
 
 export interface User {
   id?: number;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   password: string;
+  email: string;
+  role?: string;
 }
 const pepper = process.env.BCRYPT_PASSWORD;
 export class UserStore {
@@ -14,18 +16,20 @@ export class UserStore {
       firstName: user.firstName,
       lastName: user.lastName,
       password: user.password,
+      email: user.email,
     };
     const saltRound = parseInt(process.env.SALT_ROUNDS as string, 10);
     try {
       const conn = await client.connect();
       const sql =
-        'INSERT INTO users (firstname, lastname, password_digest) VALUES($1, $2, $3) RETURNING * ';
+        'INSERT INTO users (firstname, lastname, password_digest, email) VALUES($1, $2, $3, $4) RETURNING * ';
       const hash = await bcrypt.hash(newUser.password + pepper, saltRound);
 
       const result = await conn.query(sql, [
         newUser.firstName,
         newUser.lastName,
         hash,
+        newUser.email,
       ]);
       conn.release();
       return result.rows[0];
@@ -59,16 +63,11 @@ export class UserStore {
     }
   }
 
-  async authenticate(
-    firstname: string,
-    lastname: string,
-    password: string
-  ): Promise<User | null> {
+  async authenticate(email: string, password: string): Promise<User | null> {
     try {
       const conn = await client.connect();
-      const sql =
-        'SELECT firstname, lastname, password_digest FROM users WHERE firstname = ($1) AND lastname = ($2)';
-      const result = await conn.query(sql, [firstname, lastname]);
+      const sql = 'SELECT email, password_digest FROM users WHERE email = ($1)';
+      const result = await conn.query(sql, [email]);
       if (result.rows.length > 0) {
         const user = result.rows[0];
         if (await bcrypt.compare(password + pepper, user.password_digest)) {
@@ -78,6 +77,19 @@ export class UserStore {
       return null;
     } catch (err) {
       throw new Error(`Unable to authenticate user ${err}`);
+    }
+  }
+
+  async delete(id: string): Promise<string> {
+    try {
+      const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      const user = result.rows[0];
+      conn.release();
+      return user;
+    } catch (err) {
+      throw new Error(`Unable to delete user with ${id}, Error: ${err}`);
     }
   }
 }
