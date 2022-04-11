@@ -59,6 +59,25 @@ class ProductStore {
             }
         });
     }
+    update(id, product) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `UPDATE products SET name=($1), price=($2), category=($3) WHERE id = ${id} RETURNING *`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, [
+                    product.name,
+                    product.price,
+                    product.category,
+                ]);
+                console.log(result);
+                conn.release();
+                return result.rows[0];
+            }
+            catch (err) {
+                throw new Error(`Something went wrong unable to update product with ID:${id}`);
+            }
+        });
+    }
     productByCategory(category) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -35,6 +35,20 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
+const update = async (req: Request, res: Response) => {
+  const product: Product = {
+    name: req.body.name,
+    price: req.body.price,
+    category: req.body.category,
+  };
+  try {
+    const updatedProduct = await store.update(req.params.id, product);
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
 const ProductByCategory = async (req: Request, res: Response) => {
   try {
     const category = req.query.category as string;
@@ -49,6 +63,7 @@ const productRoutes = (app: express.Application) => {
   app.post('/api/products', verifyAuthToken, create);
   app.get('/api/products', index);
   app.get('/api/products/:id', show);
+  app.patch('/api/products/:id', verifyAuthToken, update);
   app.get('/api/product', ProductByCategory);
 };
 

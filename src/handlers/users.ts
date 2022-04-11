@@ -65,10 +65,13 @@ export const verifyAuthToken = async (
     }
     const decoded = jwt.verify(token, secret) as unknown as myToken;
     const currentUser = await store.show(decoded.userId);
-    if (currentUser) {
-      req.user = currentUser;
-      next();
+    if (!currentUser) {
+      res
+        .status(401)
+        .json({ message: 'The user belonging to this token no longer exist' });
     }
+    req.user = currentUser;
+    next();
   } catch (error) {
     res.status(401).json({ message: 'invalid token' });
   }
@@ -90,7 +93,7 @@ const authenticate = async (req: Request, res: Response) => {
       user.password
     );
     if (authenticateUser === null) {
-      return res.status(401).json({ message: 'incorrect password' });
+      return res.status(401).json({ message: 'incorrect password or email' });
     }
     const token = jwt.sign({ userId: authenticateUser.id }, secret);
     res.status(200).json(token);
@@ -127,7 +130,7 @@ const userRoutes = (app: express.Application) => {
   app.post('/api/users', create);
   app.get('/api/users', verifyAuthToken, index);
   app.get('/api/users/:id', verifyAuthToken, show);
-  app.post('/api/login', verifyAuthToken, authenticate);
+  app.post('/api/login', authenticate);
   app.patch('/api/users/:id', verifyAuthToken, updateMe);
   app.delete('/api/users/:id', verifyAuthToken, destroy);
 };

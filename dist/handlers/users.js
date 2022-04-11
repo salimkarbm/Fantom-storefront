@@ -42,7 +42,6 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(users);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ err });
     }
 });
@@ -69,10 +68,13 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         }
         const decoded = jsonwebtoken_1.default.verify(token, secret);
         const currentUser = yield store.show(decoded.userId);
-        if (currentUser) {
-            req.user = currentUser;
-            next();
+        if (!currentUser) {
+            res
+                .status(401)
+                .json({ message: 'The user belonging to this token no longer exist' });
         }
+        req.user = currentUser;
+        next();
     }
     catch (error) {
         res.status(401).json({ message: 'invalid token' });
@@ -92,7 +94,7 @@ const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const authenticateUser = yield store.authenticate(user.email, user.password);
         if (authenticateUser === null) {
-            return res.status(401).json({ message: 'incorrect password' });
+            return res.status(401).json({ message: 'incorrect password or email' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: authenticateUser.id }, secret);
         res.status(200).json(token);
@@ -113,7 +115,7 @@ const updateMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield store.delete(req.params.id);
+        yield store.destroy(req.params.id);
         res.status(204).json({ message: 'deleted successfully' });
     }
     catch (err) {
@@ -124,7 +126,7 @@ const userRoutes = (app) => {
     app.post('/api/users', create);
     app.get('/api/users', exports.verifyAuthToken, index);
     app.get('/api/users/:id', exports.verifyAuthToken, show);
-    app.post('/api/login', exports.verifyAuthToken, authenticate);
+    app.post('/api/login', authenticate);
     app.patch('/api/users/:id', exports.verifyAuthToken, updateMe);
     app.delete('/api/users/:id', exports.verifyAuthToken, destroy);
 };

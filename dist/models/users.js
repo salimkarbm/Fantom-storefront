@@ -107,7 +107,7 @@ class UserStore {
             }
         });
     }
-    delete(id) {
+    destroy(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const sql = `DELETE FROM users WHERE id=${id} RETURNING *`;

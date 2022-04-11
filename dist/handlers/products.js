@@ -23,6 +23,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(201).json(newProduct);
     }
     catch (err) {
+        console.log(err);
         res.status(400).json({ error: err });
     }
 });
@@ -44,6 +45,21 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(400).json({ error: err });
     }
 });
+const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = {
+        name: req.body.name,
+        price: req.body.price,
+        category: req.body.category,
+    };
+    try {
+        const updatedProduct = yield store.update(req.params.id, product);
+        res.json(updatedProduct);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).json(err);
+    }
+});
 const ProductByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const category = req.query.category;
@@ -58,6 +74,7 @@ const productRoutes = (app) => {
     app.post('/api/products', users_1.verifyAuthToken, create);
     app.get('/api/products', index);
     app.get('/api/products/:id', show);
+    app.patch('/api/products/:id', update);
     app.get('/api/product', ProductByCategory);
 };
 exports.default = productRoutes;

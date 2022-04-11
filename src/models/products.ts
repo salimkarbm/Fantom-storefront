@@ -47,6 +47,24 @@ export class ProductStore {
     }
   }
 
+  async update(id: string, product: Product): Promise<Product> {
+    try {
+      const sql = `UPDATE products SET name=($1), price=($2), category=($3) WHERE id = ${id} RETURNING *`;
+      const conn = await client.connect();
+      const result = await conn.query(sql, [
+        product.name,
+        product.price,
+        product.category,
+      ]);
+      conn.release();
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(
+        `Something went wrong unable to update product with ID:${id}`
+      );
+    }
+  }
+
   async productByCategory(category: string): Promise<Product[]> {
     try {
       const sql = `SELECT * FROM products WHERE category='${category}'`;
