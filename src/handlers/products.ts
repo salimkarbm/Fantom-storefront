@@ -54,7 +54,6 @@ const destroy = async (req: Request, res: Response) => {
     const deletedProduct = await store.destroy(req.params.id);
     res.status(204).json(deletedProduct);
   } catch (err) {
-    console.log(err);
     res.status(400).json(err);
   }
 };
@@ -73,7 +72,7 @@ const productRoutes = (app: express.Application) => {
   app.post('/api/products', verifyAuthToken, create);
   app.get('/api/products', index);
   app.get('/api/products/:id', show);
-  app.patch('/api/products/:id', verifyAuthToken, update);
+  app.put('/api/products/:id', verifyAuthToken, update);
   app.delete('/api/products/:id', verifyAuthToken, destroy);
   app.get('/api/product', ProductByCategory);
 };

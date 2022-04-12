@@ -55,9 +55,29 @@ const showUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function*
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderToDelete = yield store.destroy(req.params.id);
-        res.json(orderToDelete);
+        res.status(204).json(orderToDelete);
     }
     catch (err) {
+        res.status(400).json(err);
+    }
+});
+const currentOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const currentOrder = yield store.currentOrders(req.params.id);
+        res.json(currentOrder);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+});
+const completeOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const completeOrder = yield store.completeOrders(req.params.id);
+        res.json(completeOrder);
+    }
+    catch (err) {
+        console.log(err);
         res.status(400).send(err);
     }
 });
@@ -76,9 +96,11 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 const orderRoutes = (app) => {
     app.post('/api/orders', users_1.verifyAuthToken, create);
     app.get('/api/orders', users_1.verifyAuthToken, index); //show all orders
-    app.get('/api/orders/:id', users_1.verifyAuthToken, show); //show only one order
+    app.get('/api/orders/:id', users_1.verifyAuthToken, show); //show a single order
     app.get('/api/users/:id/orders', users_1.verifyAuthToken, showUserOrders); //show current orders by user (id)
     app.delete('/api/orders/:id', users_1.verifyAuthToken, destroy);
+    app.get('/api/users/:id/current-orders', users_1.verifyAuthToken, currentOrders);
+    app.get('/api/users/:id/complete-orders', users_1.verifyAuthToken, completeOrders);
     app.post('/api/orders/:id/product/:id', users_1.verifyAuthToken, addProduct);
 };
 exports.default = orderRoutes;

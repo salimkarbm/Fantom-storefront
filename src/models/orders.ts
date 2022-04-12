@@ -55,7 +55,7 @@ export class OrderStore {
       return result.rows;
     } catch (err) {
       throw new Error(
-        `There was an error with finding orders for user with ID ${userId}.${err}`
+        `Something went wrong unable to get orders ID:${userId}.${err}`
       );
     }
   }
@@ -71,6 +71,34 @@ export class OrderStore {
     } catch (err) {
       throw new Error(
         `Something went wrong unable to delete order with id = ${id}`
+      );
+    }
+  }
+
+  async currentOrders(id: string): Promise<Order[]> {
+    try {
+      const sql = `SELECT * FROM orders WHERE user_id=${id} AND status='active'`;
+      const conn = await client.connect();
+      const results = await conn.query(sql);
+      conn.release();
+      return results.rows;
+    } catch (err) {
+      throw new Error(
+        `Something went wrong! No current orders for user id = ${id}`
+      );
+    }
+  }
+
+  async completeOrders(id: string): Promise<Order[]> {
+    try {
+      const sql = `SELECT * FROM orders WHERE user_id=${id} AND status='complete'`;
+      const conn = await client.connect();
+      const results = await conn.query(sql);
+      conn.release();
+      return results.rows;
+    } catch (err) {
+      throw new Error(
+        `Something went wrong! No complete orders for user id = ${id}`
       );
     }
   }

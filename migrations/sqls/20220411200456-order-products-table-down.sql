@@ -1,1 +1,2 @@
-/* Replace with your SQL commands */
+/* drop table order products */
+DROP TABLE order_products CASCADE;

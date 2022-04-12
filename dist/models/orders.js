@@ -69,7 +69,7 @@ class OrderStore {
                 return result.rows;
             }
             catch (err) {
-                throw new Error(`There was an error with finding orders for user with ID ${userId}.${err}`);
+                throw new Error(`Something went wrong unable to get orders ID:${userId}.${err}`);
             }
         });
     }
@@ -85,6 +85,34 @@ class OrderStore {
             }
             catch (err) {
                 throw new Error(`Something went wrong unable to delete order with id = ${id}`);
+            }
+        });
+    }
+    currentOrders(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `SELECT * FROM orders WHERE user_id=${id} AND status='active'`;
+                const conn = yield database_1.default.connect();
+                const results = yield conn.query(sql);
+                conn.release();
+                return results.rows;
+            }
+            catch (err) {
+                throw new Error(`Something went wrong! No current orders for user id = ${id}`);
+            }
+        });
+    }
+    completeOrders(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `SELECT * FROM orders WHERE user_id=${id} AND status='complete'`;
+                const conn = yield database_1.default.connect();
+                const results = yield conn.query(sql);
+                conn.release();
+                return results.rows;
+            }
+            catch (err) {
+                throw new Error(`Something went wrong! No complete orders for user id = ${id}`);
             }
         });
     }

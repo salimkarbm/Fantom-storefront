@@ -60,8 +60,8 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productDelete = yield store.destroy(req.params.id);
-        res.status(204).json(productDelete);
+        const deletedProduct = yield store.destroy(req.params.id);
+        res.status(204).json(deletedProduct);
     }
     catch (err) {
         res.status(400).json(err);
@@ -81,8 +81,8 @@ const productRoutes = (app) => {
     app.post('/api/products', users_1.verifyAuthToken, create);
     app.get('/api/products', index);
     app.get('/api/products/:id', show);
-    app.patch('/api/products/:id', users_1.verifyAuthToken, update);
-    app.patch('/api/products/:id', users_1.verifyAuthToken, destroy);
+    app.put('/api/products/:id', users_1.verifyAuthToken, update);
+    app.delete('/api/products/:id', users_1.verifyAuthToken, destroy);
     app.get('/api/product', ProductByCategory);
 };
 exports.default = productRoutes;

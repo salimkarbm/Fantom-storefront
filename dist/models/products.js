@@ -80,15 +80,15 @@ class ProductStore {
     destroy(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = `DELETE FROM products WHERE id=${id};`;
+                const sql = `DELETE FROM products WHERE id=${id}`;
                 const conn = yield database_1.default.connect();
-                const result = yield conn.query(sql, [id]);
-                const products = result.rows[0];
+                const result = yield conn.query(sql);
+                const product = result.rows[0];
                 conn.release();
-                return products;
+                return product;
             }
             catch (err) {
-                throw new Error(`Cannot delete user with id = ${id}`);
+                throw new Error(`Cannot delete user with id:${id}`);
             }
         });
     }
