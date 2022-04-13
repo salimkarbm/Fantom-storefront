@@ -62,12 +62,12 @@ const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const currentOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = String(req.user.id);
     try {
-        const currentOrder = yield store.currentOrders(req.params.id);
+        const currentOrder = yield store.currentOrders(userId);
         res.json(currentOrder);
     }
     catch (err) {
-        console.log(err);
         res.status(400).send(err);
     }
 });
@@ -77,7 +77,6 @@ const completeOrders = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.json(completeOrder);
     }
     catch (err) {
-        console.log(err);
         res.status(400).send(err);
     }
 });
@@ -99,7 +98,7 @@ const orderRoutes = (app) => {
     app.get('/api/orders/:id', users_1.verifyAuthToken, show); //show a single order
     app.get('/api/users/:id/orders', users_1.verifyAuthToken, showUserOrders); //show current orders by user (id)
     app.delete('/api/orders/:id', users_1.verifyAuthToken, destroy);
-    app.get('/api/users/:id/current-orders', users_1.verifyAuthToken, currentOrders);
+    app.get('/api/current-orders', users_1.verifyAuthToken, currentOrders);
     app.get('/api/users/:id/complete-orders', users_1.verifyAuthToken, completeOrders);
     app.post('/api/orders/:id/product/:id', users_1.verifyAuthToken, addProduct);
 };

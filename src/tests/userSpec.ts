@@ -1,11 +1,12 @@
 import { User, UserStore } from '../models/users';
 
 const store = new UserStore();
-const user: User = {
-  email: 'example@gmail.com',
-  password: '1234',
-};
+
 describe('Test Users', () => {
+  const user: User = {
+    email: 'example@gmail.com',
+    password: '1234',
+  };
   it('should have a create method', () => {
     expect(store.create).toBeDefined();
   });
@@ -18,12 +19,13 @@ describe('Test Users', () => {
   it('should return an list of all users', async () => {
     const result = await store.index();
     expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(0);
   });
   it('should have a show method', () => {
-    expect(store.index).toBeDefined();
+    expect(store.show).toBeDefined();
   });
   it('should return a single user', async () => {
-    await expectAsync(store.index()).toBeResolved();
+    await expectAsync(store.show).toBeResolved();
   });
   it('should have an authenticate method', () => {
     expect(store.authenticate).toBeDefined();

@@ -54,9 +54,8 @@ const destroy = async (req: Request, res: Response) => {
 };
 
 const currentOrders = async (req: Request, res: Response) => {
-  const userId = String(req.user.id);
   try {
-    const currentOrder = await store.currentOrders(userId);
+    const currentOrder = await store.currentOrders(req.params.id);
     res.json(currentOrder);
   } catch (err) {
     res.status(400).send(err);
@@ -90,7 +89,7 @@ const orderRoutes = (app: express.Application) => {
   app.get('/api/orders/:id', verifyAuthToken, show); //show a single order
   app.get('/api/users/:id/orders', verifyAuthToken, showUserOrders); //show current orders by user (id)
   app.delete('/api/orders/:id', verifyAuthToken, destroy);
-  app.get('/api/current-orders', verifyAuthToken, currentOrders);
+  app.get('/api/users/:id/current-orders', verifyAuthToken, currentOrders);
   app.get('/api/users/:id/complete-orders', verifyAuthToken, completeOrders);
   app.post('/api/orders/:id/product/:id', verifyAuthToken, addProduct);
 };
