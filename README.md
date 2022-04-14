@@ -80,20 +80,18 @@ To run the jasmine tests use the following commands:
 ```
 npm run test-db
 ```
-this will run migration test and drop the test database.
+this will run migration test.
 
-To run models and endpoints test run the following command on the psql terminal
-
-```
-CREATE DATABASE test;
-```
-this will craete the test database 
-
-
-then run the following command on your project directory
+To run models and endpoints test run the following command
 
 ```
 npm run test
+```
+
+run the following command to drop the test database
+
+```
+npm run drop-test-db
 ```
 
 # Usage
@@ -105,9 +103,9 @@ Contributions, issues and feature requests are welcome!
 
 # Authors
 
-[Github:](https://github.com/salimkarbm)\
+Github:[@salimkarbm](https://github.com/salimkarbm)\
 LinkedIn:[Salim Imuzai](https://www.linkedin.com/in/salimkarbm/)\
-[Twitter:](https://twitter.com/salimkarbm)
+Twitter:[@salimkarbm](https://twitter.com/salimkarbm)
 
 # Show your support
 

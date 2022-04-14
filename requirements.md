@@ -119,7 +119,7 @@ Url: **/api/products/:id**
 Display products by their category
 
 Method: **GET**\
-Url params: **category**\ 
+Url params: **category**<br>
 Url: **/api/products?category**
 
 Update products. The following data is required to update a product:
@@ -136,7 +136,7 @@ Body params:
   }
   ```
 
-delete an orders
+Delete an orders
 
 Method: **DELETE**\
 Url params: **order id**\
@@ -182,8 +182,8 @@ Url: **/api/users**
 Displays a single user
 
 Method: **GET**\
-Url params: **user id**\ 
-Url: **/api/products/:id**
+Url params: **userId**<br>
+Url: **/api/users/:id**
 
 Login existing user. The following data is required to authenticate a user:
 
@@ -210,7 +210,7 @@ Error Response\
   }
   ```
 
-delete a user
+Delete a user
 
 Method: **DELETE**\
 Url params: **user id**\
@@ -235,25 +235,25 @@ Body params:
 Displays complete orders
 
 Method: **GET**\
-Url params: **user id**\ 
+Url params: **user id**<br>
 Url: **/api/users/:id/complete-orders**
 
 Displays current orders
 
 Method: **GET**\
-Url params: **user id** \ 
+Url params: **user id**<br> 
 Url: **/api/users/:id/current-orders**
 
 Add products to orders
 
 Method: **POST**\
-Url params: **orderId and productId**\ 
+Url params: **orderId and productId**<br>
 Url: **/api/orders/:id/product/:id**
 
 display a single orders
 
 Method: **GET**\
-Url params: **orderId**\ 
+Url params: **orderId**\<br> 
 Url: **/api/orders/:id**
 
 display all orders
