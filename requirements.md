@@ -119,7 +119,7 @@ Url: **/api/products/:id**
 Display products by their category
 
 Method: **GET**\
-Url params: **product category**\ 
+Url params: **category**\ 
 Url: **/api/products?category**
 
 Update products. The following data is required to update a product:
@@ -247,13 +247,13 @@ Url: **/api/users/:id/current-orders**
 Add products to orders
 
 Method: **POST**\
-Url params: **order id and product id**\ 
+Url params: **orderId and productId**\ 
 Url: **/api/orders/:id/product/:id**
 
 display a single orders
 
 Method: **GET**\
-Url params: **order id**\ 
+Url params: **orderId**\ 
 Url: **/api/orders/:id**
 
 display all orders

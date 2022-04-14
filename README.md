@@ -105,9 +105,9 @@ Contributions, issues and feature requests are welcome!
 
 # Authors
 
-Github: @salimkarbm\
-LinkedIn: Salim Imuzai\
-Twitter: @salimkarbm
+[Github:](https://github.com/salimkarbm)\
+LinkedIn:[Salim Imuzai](https://www.linkedin.com/in/salimkarbm/)\
+[Twitter:](https://twitter.com/salimkarbm)
 
 # Show your support
 
