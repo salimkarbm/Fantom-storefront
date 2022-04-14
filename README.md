@@ -107,7 +107,7 @@ Contributions, issues and feature requests are welcome!
 
 Github: @salimkarbm\
 LinkedIn: Salim Imuzai\
-Twitter: @salimkarbm\
+Twitter: @salimkarbm
 
 # Show your support
 
