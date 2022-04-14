@@ -188,10 +188,9 @@ Url:**/api/products/:id**
 Login existing user. The following data is required to authenticate a user:
 
 Method:**POST**\
-Url params:**user id**\
-Url:**/api/users/:id**
-
-````
+Url:**/api/users/:id**\
+body params:
+```
 {
   email: "",
   password: ""
