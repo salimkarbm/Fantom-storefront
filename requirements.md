@@ -92,7 +92,7 @@ Body params:
   }
   ```
   Success Response\
-  status code 200\
+  status code 200
 
  Error Response\
   status code 404
@@ -119,7 +119,7 @@ Url:**/api/products/:id**
 Display products by their category
 
 Method:**GET**\
-Url params:**product category**\ 
+Url params:**product category** \ 
 Url:**/api/products?category**
 
 Update products. The following data is required to update a product:
@@ -160,7 +160,7 @@ Body params:
   }
   ```
 Success Response\
- status code 200\
+ status code 200
 
 Error Response\
  status code 404
@@ -173,17 +173,17 @@ Error Response\
   }
   ```
 
-Display all available products
+Display all available users
 
 Method:**GET**\
 Url:**/api/users**
 
 
-Displays a single product
+Displays a single user
 
 Method:**GET**\
 Url params:**user id**\ 
-Url:** /api/products/:id**
+Url:**/api/products/:id**
 
 Login existing user. The following data is required to authenticate a user:
 
@@ -191,16 +191,17 @@ Method:**POST**\
 Url params:**user id**\
 Url:**/api/users/:id**
 
+````
 {
   email: "",
   password: ""
 }
-
+```
 Success Response\
- status code 200\
+ status code 200
 
 Error Response\
- status code 404\
+ status code 404
 
   ```
   {
@@ -210,17 +211,17 @@ Error Response\
   }
   ```
 
-delete an orders
+delete a user
 
 Method: **DELETE**\
 Url params:**user id**\
-Url:**/api/orders/:id**\
+Url:**/api/orders/:id**
 
 Update users. The following data is required to update a user:
 
 Method:**Patch**\
 Url:**/api/users/:id**\
-Body params:\
+Body params:
 
   ```
   {
@@ -241,19 +242,19 @@ Url:**/api/users/:id/complete-orders**
 Displays current orders
 
 Method:**GET**\
-Url params:**user id**\ 
-Url:**/api/users/:id/current-orders**
+Url params:**user id** \ 
+Url: **/api/users/:id/current-orders**
 
 Add products to orders
 
 Method:**POST**\
-Url params:**order id and product id**\ 
-Url:**/api/orders/:id/product/:id**
+Url params:**order id and product id** \ 
+Url: **/api/orders/:id/product/:id**
 
 display a single orders
 
 Method:**GET**\
-Url params:**order id and product id**\ 
+Url params:**order id**\ 
 Url:**/api/orders/:id**
 
 display all orders
@@ -261,7 +262,7 @@ display all orders
 Method:**GET**\
 Url:**/api/orders**
 
-create new orders
+create new orders (Only authenticated users can add new products to the store).
 
 Method:**POST**\
 Url:**/api/orders**\
