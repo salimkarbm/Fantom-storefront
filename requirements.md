@@ -80,8 +80,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 Create new products in the store. (Only authenticated users can add new products to the store). The following data is required to create a product:
 
-Method:**POST**\
-Url:**/api/products**\
+Method: **POST**\
+Url: **/api/products**\
 Body params:
 
   ```
@@ -107,25 +107,25 @@ Body params:
 
 Display all available products
 
-Method:**GET**\
-Url:**/api/products**
+Method: **GET**\
+Url: **/api/products**
 
 Displays a single product
 
-Method:**GET**\
-Url params:**product id**\
-Url:**/api/products/:id**
+Method: **GET**\
+Url params: **product id**\
+Url: **/api/products/:id**
 
 Display products by their category
 
-Method:**GET**\
-Url params:**product category** \ 
-Url:**/api/products?category**
+Method: **GET**\
+Url params: **product category**\ 
+Url: **/api/products?category**
 
 Update products. The following data is required to update a product:
 
-Method:**PUT**\
-Url:**/api/products/:id**\
+Method: **PUT**\
+Url: **/api/products/:id**\
 Body params:
 
   ```
@@ -138,9 +138,9 @@ Body params:
 
 delete an orders
 
-Method:**DELETE**\
-Url params:**order id**\
-Url:**/api/orders/:id**
+Method: **DELETE**\
+Url params: **order id**\
+Url: **/api/orders/:id**
 
 
 ## Users
@@ -148,7 +148,7 @@ Url:**/api/orders/:id**
 Create new users. The following data is required to create a user:
 
 Method: **POST**\
-Url:**/api/users**\
+Url: **/api/users**\
 Body params:
 
   ```
@@ -175,20 +175,20 @@ Error Response\
 
 Display all available users
 
-Method:**GET**\
-Url:**/api/users**
+Method: **GET**\
+Url: **/api/users**
 
 
 Displays a single user
 
-Method:**GET**\
-Url params:**user id**\ 
-Url:**/api/products/:id**
+Method: **GET**\
+Url params: **user id**\ 
+Url: **/api/products/:id**
 
 Login existing user. The following data is required to authenticate a user:
 
-Method:**POST**\
-Url:**/api/users/:id**\
+Method: **POST**\
+Url: **/api/users/:id**\
 body params:
 ```
 {
@@ -213,13 +213,13 @@ Error Response\
 delete a user
 
 Method: **DELETE**\
-Url params:**user id**\
-Url:**/api/orders/:id**
+Url params: **user id**\
+Url: **/api/orders/:id**
 
 Update users. The following data is required to update a user:
 
-Method:**Patch**\
-Url:**/api/users/:id**\
+Method: **Patch**\
+Url: **/api/users/:id**\
 Body params:
 
   ```
@@ -234,37 +234,37 @@ Body params:
 
 Displays complete orders
 
-Method:**GET**\
-Url params:**user id**\ 
-Url:**/api/users/:id/complete-orders**
+Method: **GET**\
+Url params: **user id**\ 
+Url: **/api/users/:id/complete-orders**
 
 Displays current orders
 
-Method:**GET**\
-Url params:**user id** \ 
+Method: **GET**\
+Url params: **user id** \ 
 Url: **/api/users/:id/current-orders**
 
 Add products to orders
 
-Method:**POST**\
-Url params:**order id and product id** \ 
+Method: **POST**\
+Url params: **order id and product id**\ 
 Url: **/api/orders/:id/product/:id**
 
 display a single orders
 
-Method:**GET**\
-Url params:**order id**\ 
-Url:**/api/orders/:id**
+Method: **GET**\
+Url params: **order id**\ 
+Url: **/api/orders/:id**
 
 display all orders
 
-Method:**GET**\
-Url:**/api/orders**
+Method: **GET**\
+Url: **/api/orders**
 
-create new orders (Only authenticated users can add new products to the store).
+create new orders (Only authenticated users can add new orders to cart).
 
-Method:**POST**\
-Url:**/api/orders**\
+Method: **POST**\
+Url: **/api/orders**\
 body params:
 
 ```
@@ -275,6 +275,6 @@ body params:
 
 Delete an order
 
-Method:**DELETE**\
-Url params:**order id**\
-Url:**/api/orders/:id**
+Method: **DELETE**\
+Url params: **order id**\
+Url: **/api/orders/:id**
