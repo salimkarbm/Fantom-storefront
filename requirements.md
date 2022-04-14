@@ -276,7 +276,7 @@ body params:
 }
 ```
 
-delete an orders
+Delete an orders
 
 **Method: DELETE**
 **URL params:order id**
