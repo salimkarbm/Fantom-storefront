@@ -80,9 +80,9 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 Create new products in the store. (Only authenticated users can add new products to the store). The following data is required to create a product:
 
-**Method: POST**\
-**URL: /api/products**\
-Body params:\
+Method:**POST**\
+URL:**/api/products**\
+Body params:
 
   ```
   {
@@ -95,7 +95,7 @@ Body params:\
   status code 200\
 
  Error Response\
-  status code 404\
+  status code 404
 
   ```
   {
@@ -107,27 +107,26 @@ Body params:\
 
 Display all available products
 
-**Method: GET**\
-**URL: /api/products**\
-
+Method:**GET**\
+URL:**/api/products**
 
 Displays a single product
 
-**Method: GET**\
-**URL params:product id**\
-**URL: /api/products/:id**\
+Method:**GET**\
+URL params:**product id**\
+URL:**/api/products/:id**
 
 Display products by their category
 
-**Method: GET**\
-**URL params:product category**\ 
-**URL: /api/products?category**\
+Method:**GET**\
+URL params:**product category**\ 
+URL:**/api/products?category**
 
 Update products. The following data is required to update a product:
 
-**Method: PUT**\
-**URL: /api/products/:id**\
-Body params:\
+Method:**PUT**\
+URL:**/api/products/:id**\
+Body params:
 
   ```
   {
@@ -139,18 +138,18 @@ Body params:\
 
 delete an orders
 
-**Method: DELETE**\
-**URL params:order id**\
-**URL: /api/orders/:id**\
+Method:**DELETE**\
+URL params:**order id**\
+URL:**/api/orders/:id**
 
 
 ## Users
 
 Create new users. The following data is required to create a user:
 
-**Method: POST**\
-**URL: /api/users**\
-Body params:\
+Method: **POST**\
+URL:**/api/users**\
+Body params:
 
   ```
   {
@@ -158,14 +157,13 @@ Body params:\
   lastName: "",
   password: "",
   email: ""
-
   }
   ```
 Success Response\
  status code 200\
 
 Error Response\
- status code 404\
+ status code 404
 
   ```
   {
@@ -177,21 +175,21 @@ Error Response\
 
 Display all available products
 
-**Method: GET**\
-**URL: /api/users**\
+Method:**GET**\
+URL:**/api/users**
 
 
 Displays a single product
 
-**Method: GET**\
-**URL params:user id**\ 
-**URL: /api/products/:id**\
+Method:**GET**\
+URL params:**user id**\ 
+URL:** /api/products/:id**
 
 Login existing user. The following data is required to authenticate a user:
 
-**Method: POST**\
-**URL params: user id**\
-**URL: /api/users/:id**\
+Method:**POST**\
+URL params:**user id**\
+URL:**/api/users/:id**
 
 {
   email: "",
@@ -214,14 +212,14 @@ Error Response\
 
 delete an orders
 
-**Method: DELETE**\
-**URL params:user id**\
-**URL: /api/orders/:id**\
+Method: **DELETE**\
+URL params:**user id**\
+URL:**/api/orders/:id**\
 
 Update users. The following data is required to update a user:
 
-**Method: Patch**\
-**URL: /api/users/:id**\
+Method:**Patch**\
+URL:**/api/users/:id**\
 Body params:\
 
   ```
@@ -236,48 +234,47 @@ Body params:\
 
 Displays complete orders
 
-**Method: GET**\
-**URL params:user id**\ 
-**URL: /api/users/:id/complete-orders**\
+Method:**GET**\
+URL params:**user id**\ 
+URL:**/api/users/:id/complete-orders**
 
 Displays current orders
 
-**Method: GET**\
-**URL params:user id**\ 
-**URL: /api/users/:id/current-orders**\
+Method:**GET**\
+URL params:**user id**\ 
+URL:**/api/users/:id/current-orders**
 
 Add products to orders
 
-**Method: POST**\
-**URL params:order id and product id**\ 
-**URL: /api/orders/:id/product/:id**\
+Method:**POST**\
+URL params:**order id and product id**\ 
+URL:**/api/orders/:id/product/:id**
 
 display a single orders
 
-**Method: GET**\
-**URL params:order id**\ 
-**URL: /api/orders/:id**\
+Method:**GET**\
+URL params:**order id and product id**\ 
+URL:**/api/orders/:id**
 
 display all orders
 
-**Method: GET**\
-**URL: /api/orders**\
+Method:**GET**\
+URL:**/api/orders**
 
 create new orders
 
-**Method: POST**\
-**URL: /api/orders**\
-body params:\
+Method:**POST**\
+URL:**/api/orders**\
+body params:
 
 ```
 {
   status: "",
-  
 }
 ```
 
-Delete an orders
+Delete an order
 
-**Method: DELETE**\
-**URL params:order id**\
-**URL: /api/orders/:id**
+Method:**DELETE**\
+URL params:**order id**\
+URL:**/api/orders/:id**
