@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import userRoutes from './handlers/users';
 import productRoutes from './handlers/products';
 import orderRoutes from './handlers/orders';
+import { authRoutes } from './handlers/authentication';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
@@ -15,6 +16,7 @@ app.get('/', async (req: Request, res: Response) => {
   );
 });
 
+authRoutes(app);
 userRoutes(app);
 productRoutes(app);
 orderRoutes(app);

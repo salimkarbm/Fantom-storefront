@@ -136,11 +136,11 @@ Body params:
   }
   ```
 
-Delete an orders
+Delete a product
 
 Method: **DELETE**\
-Url params: **order id**\
-Url: **/api/orders/:id**
+Url params: **product id**\
+Url: **/api/products/:id**
 
 
 ## Users
@@ -214,7 +214,7 @@ Delete a user
 
 Method: **DELETE**\
 Url params: **user id**\
-Url: **/api/orders/:id**
+Url: **/api/users/:id**
 
 Update users. The following data is required to update a user:
 
@@ -253,7 +253,7 @@ Url: **/api/orders/:id/product/:id**
 display a single orders
 
 Method: **GET**\
-Url params: **orderId**\<br> 
+Url params: **orderId**<br> 
 Url: **/api/orders/:id**
 
 display all orders

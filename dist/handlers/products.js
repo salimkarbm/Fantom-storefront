@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const products_1 = require("../models/products");
-const users_1 = require("./users");
+const authentication_1 = require("./authentication");
 const store = new products_1.ProductStore();
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const product = {
@@ -78,11 +78,11 @@ const ProductByCategory = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 const productRoutes = (app) => {
-    app.post('/api/products', users_1.verifyAuthToken, create);
+    app.post('/api/products', authentication_1.verifyAuthToken, create);
     app.get('/api/products', index);
     app.get('/api/products/:id', show);
-    app.put('/api/products/:id', users_1.verifyAuthToken, update);
-    app.delete('/api/products/:id', users_1.verifyAuthToken, destroy);
+    app.put('/api/products/:id', authentication_1.verifyAuthToken, update);
+    app.delete('/api/products/:id', authentication_1.verifyAuthToken, destroy);
     app.get('/api/product', ProductByCategory);
 };
 exports.default = productRoutes;

@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const users_1 = __importDefault(require("./handlers/users"));
 const products_1 = __importDefault(require("./handlers/products"));
 const orders_1 = __importDefault(require("./handlers/orders"));
+const authentication_1 = require("./handlers/authentication");
 const app = (0, express_1.default)();
 const address = '0.0.0.0:3000';
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(express_1.default.json());
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Welcome to Fantom. The following endpoint are available to be accessed: /products, /users, /orders.');
 }));
+(0, authentication_1.authRoutes)(app);
 (0, users_1.default)(app);
 (0, products_1.default)(app);
 (0, orders_1.default)(app);

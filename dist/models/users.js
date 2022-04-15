@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserStore = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const database_1 = __importDefault(require("../database"));
-const pepper = process.env.BCRYPT_PASSWORD;
+const authentication_1 = require("../services/authentication");
+//const pepper = process.env.BCRYPT_PASSWORD;
 class UserStore {
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -29,7 +30,7 @@ class UserStore {
             try {
                 const conn = yield database_1.default.connect();
                 const sql = 'INSERT INTO users (firstname, lastname, password_digest, email) VALUES($1, $2, $3, $4) RETURNING * ';
-                const hash = yield bcrypt_1.default.hash(newUser.password + pepper, saltRound);
+                const hash = yield bcrypt_1.default.hash(newUser.password + authentication_1.pepper, saltRound);
                 const result = yield conn.query(sql, [
                     newUser.firstName,
                     newUser.lastName,
@@ -70,25 +71,6 @@ class UserStore {
             }
             catch (err) {
                 throw new Error(`unable find user with id ${id}. ${err}`);
-            }
-        });
-    }
-    authenticate(email, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const conn = yield database_1.default.connect();
-                const sql = `SELECT id, email, password_digest FROM users WHERE email='${email}'`;
-                const result = yield conn.query(sql);
-                if (result.rows.length > 0) {
-                    const user = result.rows[0];
-                    if (yield bcrypt_1.default.compare(password + pepper, user.password_digest)) {
-                        return user;
-                    }
-                }
-                return null;
-            }
-            catch (err) {
-                throw new Error(`Unable to authenticate user ${err}`);
             }
         });
     }
