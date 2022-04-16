@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const users_1 = require("../models/users");
+const users_1 = require("../../models/users");
 const store = new users_1.UserStore();
 describe('Test Users', () => {
     it('should have a create method', () => {

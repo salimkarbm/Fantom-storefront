@@ -10,7 +10,6 @@ export interface User {
   email: string;
   role?: string;
 }
-//const pepper = process.env.BCRYPT_PASSWORD;
 export class UserStore {
   async create(user: User): Promise<User> {
     const newUser = {
@@ -93,7 +92,7 @@ export class UserStore {
       conn.release();
       return user;
     } catch (err) {
-      throw new Error(`Unable to delete user with ${id}, Error: ${err}`);
+      throw new Error(`Unable to delete user with ${id}, ${err}`);
     }
   }
 }

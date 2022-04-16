@@ -16,7 +16,6 @@ exports.UserStore = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const database_1 = __importDefault(require("../database"));
 const authentication_1 = require("../services/authentication");
-//const pepper = process.env.BCRYPT_PASSWORD;
 class UserStore {
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -100,7 +99,7 @@ class UserStore {
                 return user;
             }
             catch (err) {
-                throw new Error(`Unable to delete user with ${id}, Error: ${err}`);
+                throw new Error(`Unable to delete user with ${id}, ${err}`);
             }
         });
     }
