@@ -4,6 +4,7 @@ import userRoutes from './handlers/users';
 import productRoutes from './handlers/products';
 import orderRoutes from './handlers/orders';
 import { authRoutes } from './handlers/authentication';
+import dashboardRoutes from './handlers/dashboard';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
@@ -20,6 +21,7 @@ authRoutes(app);
 userRoutes(app);
 productRoutes(app);
 orderRoutes(app);
+dashboardRoutes(app);
 
 app.get('*', (req: Request, res: Response) => {
   res.status(200).json({ Message: 'Please provide a valid endpoint' });

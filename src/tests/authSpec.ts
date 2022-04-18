@@ -1,4 +1,4 @@
-import { Authservices } from '../../services/authentication';
+import { Authservices } from '../services/authentication';
 
 const store = new Authservices();
 

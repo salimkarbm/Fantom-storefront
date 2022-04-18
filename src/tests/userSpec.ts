@@ -1,8 +1,12 @@
-import { UserStore } from '../../models/users';
+//import supertest from 'supertest';
+import { UserStore } from '../models/users';
+import { Authservices } from '../services/authentication';
+//import app from '../server';
 
 const store = new UserStore();
+const auth = new Authservices();
 
-describe('Test Users', () => {
+describe('Test Users model', () => {
   it('should have a create method', () => {
     expect(store.create).toBeDefined();
   });
@@ -17,5 +21,8 @@ describe('Test Users', () => {
   });
   it('should have a destroy method', () => {
     expect(store.destroy).toBeDefined();
+  });
+  it('should have a destroy method', () => {
+    expect(auth.authenticate).toBeDefined();
   });
 });
