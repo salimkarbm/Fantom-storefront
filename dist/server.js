@@ -17,6 +17,7 @@ const users_1 = __importDefault(require("./handlers/users"));
 const products_1 = __importDefault(require("./handlers/products"));
 const orders_1 = __importDefault(require("./handlers/orders"));
 const authentication_1 = require("./handlers/authentication");
+const dashboard_1 = __importDefault(require("./handlers/dashboard"));
 const app = (0, express_1.default)();
 const address = '0.0.0.0:3000';
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,7 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 (0, users_1.default)(app);
 (0, products_1.default)(app);
 (0, orders_1.default)(app);
+(0, dashboard_1.default)(app);
 app.get('*', (req, res) => {
     res.status(200).json({ Message: 'Please provide a valid endpoint' });
 });

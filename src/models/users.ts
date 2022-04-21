@@ -95,4 +95,16 @@ export class UserStore {
       throw new Error(`Unable to delete user with ${id}, ${err}`);
     }
   }
+
+  async checkExistingUser(email: string): Promise<boolean> {
+    try {
+      const sql = `SELECT * FROM users WHERE email = '${email}'`;
+      const conn = await client.connect();
+      const result = await conn.query(sql);
+      conn.release();
+      return !!result.rows[0];
+    } catch (err) {
+      throw new Error(`Something went wrong, ${err}`);
+    }
+  }
 }

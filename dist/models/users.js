@@ -103,5 +103,19 @@ class UserStore {
             }
         });
     }
+    checkExistingUser(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `SELECT * FROM users WHERE email = ${email}`;
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql);
+                conn.release();
+                return !!result.rows[0];
+            }
+            catch (err) {
+                throw new Error(`Something went wrong, ${err}`);
+            }
+        });
+    }
 }
 exports.UserStore = UserStore;

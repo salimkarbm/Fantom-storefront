@@ -14,10 +14,17 @@ const create = async (req: Request, res: Response) => {
     email: req.body.email,
   };
   try {
+    const existingUser = await store.checkExistingUser(user.email);
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: 'user with this email already exist' });
+    }
     const newUser = await store.create(user);
     const token = jwt.sign({ userId: newUser.id }, secret);
     res.status(201).json({ token: token });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: err });
   }
 };

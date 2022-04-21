@@ -25,6 +25,12 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         email: req.body.email,
     };
     try {
+        const existingUser = yield store.checkExistingUser(user.email);
+        if (existingUser) {
+            return res
+                .status(400)
+                .json({ message: 'user with this email already exist' });
+        }
         const newUser = yield store.create(user);
         const token = jsonwebtoken_1.default.sign({ userId: newUser.id }, secret);
         res.status(201).json({ token: token });
