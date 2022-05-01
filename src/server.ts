@@ -23,8 +23,11 @@ productRoutes(app);
 orderRoutes(app);
 dashboardRoutes(app);
 
-app.get('*', (req: Request, res: Response) => {
-  res.status(200).json({ Message: 'Please provide a valid endpoint' });
+app.all('*', (req: Request, res: Response) => {
+  res.status(404).json({
+    status: 'fail',
+    Message: `can't find ${req.originalUrl} on the server`,
+  });
 });
 
 app.listen(PORT, () => {
