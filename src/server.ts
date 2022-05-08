@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 
-import userRoutes from './handlers/users';
-import productRoutes from './handlers/products';
-import orderRoutes from './handlers/orders';
-import { authRoutes } from './handlers/authentication';
-import dashboardRoutes from './handlers/dashboard';
+import userRoutes from './routes/users';
+import productRoutes from './routes/products';
+import orderRoutes from './routes/orders';
+import authRoutes from './routes/authentication';
+import dashboardRoutes from './routes/dashboard';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';

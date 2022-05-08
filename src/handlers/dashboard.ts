@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import DashboardQueries from '../services/dashboard';
 
 const service = new DashboardQueries();
@@ -11,8 +11,4 @@ const topFivePopularProducts = async (req: Request, res: Response) => {
   }
 };
 
-const dashboardRoutes = (app: express.Application): void => {
-  app.get('/products/info/top-5-products', topFivePopularProducts);
-};
-
-export default dashboardRoutes;
+export default topFivePopularProducts;

@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const orders_1 = require("../models/orders");
-const authentication_1 = require("./authentication");
+const authentication_1 = __importDefault(require("../middlewares/authentication"));
 const store = new orders_1.OrderStore();
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const order = {
@@ -92,13 +95,13 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 const orderRoutes = (app) => {
-    app.post('/api/orders', authentication_1.verifyAuthToken, create);
-    app.get('/api/orders', authentication_1.verifyAuthToken, index); //show all orders
-    app.get('/api/orders/:id', authentication_1.verifyAuthToken, show); //show a single order
-    app.get('/api/users/:id/orders', authentication_1.verifyAuthToken, showUserOrders); //show current orders by user (id)
-    app.delete('/api/orders/:id', authentication_1.verifyAuthToken, destroy);
-    app.get('/api/users/:id/current-orders', authentication_1.verifyAuthToken, currentOrders);
-    app.get('/api/users/:id/complete-orders', authentication_1.verifyAuthToken, completeOrders);
-    app.post('/api/orders/:id/product/:id', authentication_1.verifyAuthToken, addProduct);
+    app.post('/api/orders', authentication_1.default, create);
+    app.get('/api/orders', authentication_1.default, index); //show all orders
+    app.get('/api/orders/:id', authentication_1.default, show); //show a single order
+    app.get('/api/users/:id/orders', authentication_1.default, showUserOrders); //show current orders by user (id)
+    app.delete('/api/orders/:id', authentication_1.default, destroy);
+    app.get('/api/users/:id/current-orders', authentication_1.default, currentOrders);
+    app.get('/api/users/:id/complete-orders', authentication_1.default, completeOrders);
+    app.post('/api/orders/:id/product/:id', authentication_1.default, addProduct);
 };
 exports.default = orderRoutes;

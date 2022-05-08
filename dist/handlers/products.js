@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const products_1 = require("../models/products");
-const authentication_1 = require("./authentication");
+const authentication_1 = __importDefault(require("../middlewares/authentication"));
 const store = new products_1.ProductStore();
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const product = {
@@ -78,11 +81,11 @@ const ProductByCategory = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 const productRoutes = (app) => {
-    app.post('/api/products', authentication_1.verifyAuthToken, create);
+    app.post('/api/products', authentication_1.default, create);
     app.get('/api/products', index);
     app.get('/api/products/:id', show);
-    app.put('/api/products/:id', authentication_1.verifyAuthToken, update);
-    app.delete('/api/products/:id', authentication_1.verifyAuthToken, destroy);
+    app.put('/api/products/:id', authentication_1.default, update);
+    app.delete('/api/products/:id', authentication_1.default, destroy);
     app.get('/api/product', ProductByCategory);
 };
 exports.default = productRoutes;

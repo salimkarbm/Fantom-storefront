@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { User, UserStore } from '../models/users';
-import { verifyAuthToken, authenticate } from './authentication';
 
 const store = new UserStore();
 
 const secret = process.env.TOKEN_SECRET as string;
-const create = async (req: Request, res: Response) => {
+export const create = async (req: Request, res: Response) => {
   const user: User = {
     firstName: req.body.firstname,
     lastName: req.body.lastname,
@@ -28,7 +27,7 @@ const create = async (req: Request, res: Response) => {
     res.status(400).json({ error: err });
   }
 };
-const index = async (req: Request, res: Response) => {
+export const index = async (req: Request, res: Response) => {
   try {
     const users = await store.index();
     if (!users) {
@@ -40,7 +39,7 @@ const index = async (req: Request, res: Response) => {
   }
 };
 
-const show = async (req: Request, res: Response) => {
+export const show = async (req: Request, res: Response) => {
   try {
     const user = await store.show(req.params.id);
     res.status(200).json(user);
@@ -49,7 +48,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const updateMe = async (req: Request, res: Response) => {
+export const updateMe = async (req: Request, res: Response) => {
   const { firstname, lastname, email } = req.body;
   try {
     const updateUser = await store.updateMe(
@@ -64,7 +63,7 @@ const updateMe = async (req: Request, res: Response) => {
   }
 };
 
-const destroy = async (req: Request, res: Response) => {
+export const destroy = async (req: Request, res: Response) => {
   try {
     await store.destroy(req.params.id);
     res.status(204).json({ message: 'deleted successfully' });
@@ -72,14 +71,3 @@ const destroy = async (req: Request, res: Response) => {
     res.status(400).json({ error: err });
   }
 };
-
-const userRoutes = (app: express.Application) => {
-  app.post('/api/users', create);
-  app.get('/api/users', verifyAuthToken, index);
-  app.get('/api/users/:id', verifyAuthToken, show);
-  app.post('/api/login', authenticate);
-  app.patch('/api/users/:id', verifyAuthToken, updateMe);
-  app.delete('/api/users/:id', verifyAuthToken, destroy);
-};
-
-export default userRoutes;

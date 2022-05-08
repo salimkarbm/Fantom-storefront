@@ -13,29 +13,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const authentication_1 = require("../services/authentication");
-const authstore = new authentication_1.Authservices();
+const users_1 = require("../models/users");
+const store = new users_1.UserStore();
 const secret = process.env.TOKEN_SECRET;
-const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = {
-        password: req.body.password,
-        email: req.body.email,
-    };
-    if (!user.email || !user.password) {
-        return res
-            .status(400)
-            .json({ message: 'please provide valid email and password' });
-    }
+const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const authenticateUser = yield authstore.authenticate(user.email, user.password);
-        if (authenticateUser === null) {
-            return res.status(401).json({ message: 'incorrect password or email' });
+        let token;
+        if (req.headers.authorization &&
+            req.headers.authorization.startsWith('Bearer')) {
+            token = req.headers.authorization.split(' ')[1];
         }
-        const token = jsonwebtoken_1.default.sign({ userId: authenticateUser.id }, secret);
-        res.status(200).json(token);
+        if (!token) {
+            return res
+                .status(401)
+                .json({ error: 'You are not logged in! please login to gain access.' });
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, secret);
+        const currentUser = yield store.show(decoded.userId);
+        if (!currentUser) {
+            return res
+                .status(401)
+                .json({ message: 'The user belonging to this token no longer exist' });
+        }
+        req.user = currentUser;
+        next();
     }
-    catch (err) {
-        res.status(400).json({ error: err });
+    catch (error) {
+        res.status(401).json({ message: 'invalid token' });
     }
 });
-exports.default = authenticate;
+exports.default = verifyAuthToken;
